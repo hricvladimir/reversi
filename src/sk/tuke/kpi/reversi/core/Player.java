@@ -1,4 +1,4 @@
-package sk.tuke.kpi.kp.core;
+package sk.tuke.kpi.reversi.core;
 
 public class Player {
     private String name;
@@ -7,7 +7,7 @@ public class Player {
 
     public Player(String name, char color) {
         if(name == null) return;
-        if(color != 'b' && color != 'w') return;
+        if(color != 'B' && color != 'R') return;
 
         this.name = name;
         this.color = color;

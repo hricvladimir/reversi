@@ -1,6 +1,6 @@
-package sk.tuke.kpi.kp.consoleui;
+package sk.tuke.kpi.reversi.consoleui;
 
-import sk.tuke.kpi.kp.core.*;
+import sk.tuke.kpi.reversi.core.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -30,14 +30,13 @@ public class ConsoleUI {
         if(field.getPlayer1() instanceof Computer) computer = (Computer) field.getPlayer1();
         else if(field.getPlayer2() instanceof Computer) computer = (Computer) field.getPlayer2();
 
+        // game loop
         do {
-            printField();
-
+            printGame(); // prints game stats and field
             if (isFinished()) {
                 field.setState(GameState.FINISHED);
-                break;
+                //break;
             }
-
             if(field.getPlayerOnTurn() instanceof Computer) {
                 computer.makeTurn();
             } else processInput();
@@ -58,29 +57,39 @@ public class ConsoleUI {
         return !field.isMovePossible();
     }
 
-    public void printField() {
+    public void printGame() {
         //for (int i = 0; i < 50; ++i) System.out.println();
         System.out.println("\nType two numbers [row] [col] and press Enter");
-        System.out.println("Player " + field.getPlayerOnTurn().getName() + " with color " + field.getPlayerOnTurn().getColor() + " is on turn.");
-        System.out.println(field.getPlayer1().getName() + "'s score: " + field.getPlayer1().getScore());
-        System.out.println(field.getPlayer2().getName() + "'s score: " + field.getPlayer2().getScore());
+        printGameStats();
+        printField();
+    }
 
+    private void printField() {
         System.out.print(" ");
         for(int i = 1; i <= field.getSize(); i++)
-            System.out.print(ANSI_RESET + " " + i +"\n");
-
+            System.out.print(ANSI_RESET + " " + i);
+        System.out.println();
 
         int index = 0;
         for(Tile[] tileRow : field.getTiles()) {
             System.out.print(ANSI_RESET + ++index + " ");
             for(Tile tile : tileRow) {
                 if(tile.getTileState() == TileState.OCCUPIED) {
-                    if(tile.getStone().getPlayer().getColor() == 'w') System.out.print(ANSI_RED + "W ");
+                    if(tile.getStone().getPlayer().getColor() == 'R') System.out.print(ANSI_RED + "R ");
                     else System.out.print(ANSI_BLUE + "B ");
                 } else System.out.print(ANSI_RESET + "- ");
             }
-            System.out.println("\n");
+            System.out.println();
         }
+    }
+
+    private void printGameStats() {
+        Player playerOnTurn = field.getPlayerOnTurn();
+        if(playerOnTurn.getColor() == 'B')
+            System.out.println("Player " + playerOnTurn.getName() + " with color " + ANSI_BLUE + "B" + ANSI_RESET + " is on turn.");
+        else System.out.println("Player " + playerOnTurn.getName() + " with color " + ANSI_RED + "R" + ANSI_RESET + " is on turn.");
+        System.out.println(field.getPlayer1().getName() + "'s score: " + field.getPlayer1().getScore());
+        System.out.println(field.getPlayer2().getName() + "'s score: " + field.getPlayer2().getScore());
     }
 
     public void processInput() {

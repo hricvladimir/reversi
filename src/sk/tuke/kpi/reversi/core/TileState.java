@@ -1,4 +1,4 @@
-package sk.tuke.kpi.kp.core;
+package sk.tuke.kpi.reversi.core;
 
 public enum TileState {
     FREE,
