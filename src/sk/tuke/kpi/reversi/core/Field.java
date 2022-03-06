@@ -26,6 +26,12 @@ public class Field {
 
         this.player1 = player1;
         this.player2 = player2;
+
+        if(player1 instanceof Computer)
+            ((Computer) player1).setField(this);
+        if(player2 instanceof Computer)
+            ((Computer) player2).setField(this);
+
         createField();
         playerOnTurn = player1;
         updateScore();
