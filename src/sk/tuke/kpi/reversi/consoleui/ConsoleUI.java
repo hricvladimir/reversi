@@ -19,42 +19,71 @@ public class ConsoleUI {
 
     private final Field field;
     private final Scanner scanner = new Scanner(System.in);
-    private Computer computer = null;
+    private Computer computer1 = null;
+    private Computer computer2 = null;
 
     public ConsoleUI(Field field) {
         this.field = field;
     }
 
     public void play() {
-        // determine if the game is PvP or PvAI
-        if(field.getPlayer1() instanceof Computer) computer = (Computer) field.getPlayer1();
-        else if(field.getPlayer2() instanceof Computer) computer = (Computer) field.getPlayer2();
+
+        // determine if the game is PvP or PvAI or AIvAI
+        if(field.getPlayer1() instanceof Computer) computer1 = (Computer) field.getPlayer1();
+        else if(field.getPlayer2() instanceof Computer) computer2 = (Computer) field.getPlayer2();
 
         // game loop
         do {
             printGame(); // prints game stats and field
-            if (isFinished()) {
-                field.setState(GameState.FINISHED);
-                //break;
+            if (!field.isMovePossible()) {
+                System.out.println("No moves possible, skipping turn!");
+                field.changeTurn();
+                if(!field.isMovePossible()) {
+                    System.out.println("No moves possible, skipping turn!");
+                    field.setState(GameState.FINISHED);
+                    break;
+                }
+
             }
             if(field.getPlayerOnTurn() instanceof Computer) {
-                computer.makeTurn();
+                ((Computer) field.getPlayerOnTurn()).makeTurn();
             } else processInput();
 
         } while(field.getState() == GameState.PLAYING);
 
+        // finished situations
         if(field.getState() == GameState.FINISHED) {
             printField();
             if(field.getPlayer1().getScore() > field.getPlayer2().getScore()) {
                 System.out.println("Player " + field.getPlayer1().getName() + " won!");
             }
-            else System.out.println("Player " + field.getPlayer2().getName() + " won!");
+            else if(field.getPlayer1().getScore() < field.getPlayer2().getScore())
+                System.out.println("Player " + field.getPlayer2().getName() + " won!");
+            else System.out.println("Tie! Nobody won!");
         }
-    }
 
-    private boolean isFinished() {
-        if(!field.isMovePossible()) field.changeTurn();
-        return !field.isMovePossible();
+
+
+        /*
+        do {
+            printGame();
+            processInput();
+        } while(field.getState() == GameState.PLAYING);
+
+        printGame();
+
+        // finished situations
+        if(field.getState() == GameState.FINISHED) {
+            printField();
+            if(field.getPlayer1().getScore() > field.getPlayer2().getScore()) {
+                System.out.println("Player " + field.getPlayer1().getName() + " won!");
+            }
+            else if(field.getPlayer1().getScore() < field.getPlayer2().getScore())
+                System.out.println("Player " + field.getPlayer2().getName() + " won!");
+            else System.out.println("Tie! Nobody won!");
+        }
+
+         */
     }
 
     public void printGame() {
@@ -75,8 +104,8 @@ public class ConsoleUI {
             System.out.print(ANSI_RESET + ++index + " ");
             for(Tile tile : tileRow) {
                 if(tile.getTileState() == TileState.OCCUPIED) {
-                    if(tile.getStone().getPlayer().getColor() == 'R') System.out.print(ANSI_RED + "R ");
-                    else System.out.print(ANSI_BLUE + "B ");
+                    if(tile.getStone().getPlayer().getColor() == 'R') System.out.print(ANSI_RED + "R " + ANSI_RESET);
+                    else System.out.print(ANSI_BLUE + "B " + ANSI_RESET);
                 } else System.out.print(ANSI_RESET + "- ");
             }
             System.out.println();
@@ -93,7 +122,13 @@ public class ConsoleUI {
     }
 
     public void processInput() {
-        if(field.getPlayerOnTurn() instanceof Computer) return;
+
+        Player player = field.getPlayerOnTurn();
+        if(player instanceof Computer) {
+            ((Computer) player).makeTurn();
+            return;
+        }
+
         int row, col;
         try {
             row = scanner.nextInt() - 1;
@@ -105,9 +140,13 @@ public class ConsoleUI {
             System.out.println("Wrong input. Try again!");
             return;
         }
-
-
-        if(isPositionOutOfBounds(row, col)) {
+        try {
+            field.addStoneToField(field.getPlayerOnTurn(), row, col);
+        } catch (Exception e) {
+            System.out.println("Wrong input");
+        }
+        /*
+        if(field.isPositionOutOfBounds(row, col)) {
             System.out.println("Your input is out of bounds. Try again!");
             return;
         }
@@ -115,9 +154,7 @@ public class ConsoleUI {
         if(!field.addStoneToField(field.getPlayerOnTurn(), row,col)) {
             System.out.println("You can not place a stone in this position. Try again!");
         }
-    }
 
-    private boolean isPositionOutOfBounds(int row, int col) {
-        return row < 0 || col < 0 || row >= field.getSize() || col >= field.getSize(); // determines if desired position is out of bounds
+         */
     }
 }

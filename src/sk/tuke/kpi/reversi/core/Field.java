@@ -11,14 +11,17 @@ public class Field {
     private GameState state = GameState.PLAYING;
 
     public Field(Player player1, Player player2) { // default size
-        if(player1 == player2) return;
         this.size = 8;
+        if(player1 == player2) return;
+        if(player1 == null || player2 == null) return;
         initializeField(size, player1, player2);
     }
 
     public Field(int size, Player player1, Player player2) { // custom size
-        if(player1 == player2 || size <= 4) return;
+        if(size <= 4) return;
         this.size = size;
+        if(player1 == player2) return;
+        if(player1 == null || player2 == null) return;
         initializeField(size, player1, player2);
     }
 
@@ -62,7 +65,9 @@ public class Field {
     }
 
     public boolean addStoneToField(Player player, int row, int col) {
+
         if(state == GameState.FINISHED || tiles[row][col].getTileState() == TileState.OCCUPIED) return false;
+        if(isPositionOutOfBounds(row, col)) return false;
 
         markStones(row, col);
         if(!changeColors()) return false;
@@ -116,6 +121,7 @@ public class Field {
     public boolean isMovePossible() {
         for(int row = 0; row < size; row++)
             for(int col = 0; col < size; col++) {
+                if(tiles[row][col].getTileState() != TileState.FREE) continue;
                 horizontalCheck(row, col);
                 verticalCheck(row, col);
                 diagonalCheck(row, col);
@@ -132,6 +138,7 @@ public class Field {
                 if(tiles[row][col].getTileState() != TileState.FREE)
                     if(tiles[row][col].getStone().shouldChange()) {
                         tiles[row][col].getStone().setShouldChange(false);
+                        System.out.println("row: " + (row+1) + "; col: " + (col+1));
                         didChange = true;
                     }
             }
@@ -305,5 +312,9 @@ public class Field {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public boolean isPositionOutOfBounds(int row, int col) {
+        return row < 0 || col < 0 || row > size || col > size;
     }
 }

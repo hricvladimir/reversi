@@ -9,14 +9,15 @@ import sk.tuke.kpi.reversi.tests.FieldTest;
 public class Main {
     public static void main(String[] args) {
 
-        FieldTest fieldTest = new FieldTest();
-        fieldTest.addingStoneShouldChangePlayer();
+        //FieldTest fieldTest = new FieldTest();
+        //fieldTest.addingStoneShouldChangePlayer();
 
         Player player1 = new Player("Player1", 'B');
         Player player3 = new Player("computah", 'R');
         Computer player2 = new Computer("Player2", 'R');
+        Computer computer = new Computer("computah2", 'B');
 
-        Field field = new Field(5, player1, player2);
+        Field field = new Field(5, player2, computer);
         //player2.setField(field);
 
         ConsoleUI consoleUI = new ConsoleUI(field);
