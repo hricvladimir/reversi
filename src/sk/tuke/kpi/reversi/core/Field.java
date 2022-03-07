@@ -2,14 +2,14 @@ package sk.tuke.kpi.reversi.core;
 
 public class Field {
 
-    private int size;
+    private final int size;
     private int freeTiles;
     private Tile[][] tiles;
     private Player player1;
     private Player player2;
     private Player playerOnTurn;
     private GameState state = GameState.PLAYING;
-    private GameMode gameMode;
+    private final GameMode gameMode;
 
     public Field(GameMode gameMode) { // default size
         this.size = 8;
@@ -19,7 +19,8 @@ public class Field {
     }
 
     public Field(GameMode gameMode, int size) { // custom size
-        if(size <= 4) return;
+        if(size < 4 || size%2 != 0)
+            throw new IllegalArgumentException("Illegal size. Minimum size is 4 and must be even.");
         this.size = size;
         this.gameMode = gameMode;
         initializePlayers();
@@ -38,7 +39,6 @@ public class Field {
             }
         }
     }
-
 
     private void initializeField(int size, Player player1, Player player2) {
 
@@ -80,17 +80,6 @@ public class Field {
         freeTiles--;
     }
 
-    public void handleComputerMove() {
-        if(!(playerOnTurn instanceof Computer)) return;
-
-        try {
-            ((Computer) playerOnTurn).makeTurn();
-        } catch(Exception e) {
-            System.out.println(e.getMessage() + " Skipping turn!");
-            this.changeTurn();
-        }
-    }
-
     public void addStoneToField(Player player, int row, int col) throws Exception{
 
         if(!isMovePossible()) changeTurn();
@@ -98,7 +87,6 @@ public class Field {
             state = GameState.FINISHED;
             throw new NoPossibleMovesException();
         }
-
 
         if(state == GameState.FINISHED) throw new IllegalGameStateException("The game is already finished!");
         if(getPlayerOnTurn().getColor() == 'x') throw new Exception("Player colors were not set!");
@@ -340,10 +328,6 @@ public class Field {
         }
     }
 
-    public boolean isFieldFull() {
-        return this.freeTiles == 0;
-    }
-
     public Tile[][] getTiles() {
         return tiles;
     }
@@ -360,10 +344,6 @@ public class Field {
         return size;
     }
 
-    public int getFreeTiles() {
-        return freeTiles;
-    }
-
     public Player getPlayer1() {
         return player1;
     }
@@ -372,19 +352,11 @@ public class Field {
         return player2;
     }
 
-    public void setState(GameState state) {
-        this.state = state;
-    }
-
     public boolean isPositionOutOfBounds(int row, int col) {
         return row < 0 || col < 0 || row > size || col > size;
     }
 
     public GameMode getGameMode() {
         return gameMode;
-    }
-
-    public void setGameMode(GameMode gameMode) {
-        this.gameMode = gameMode;
     }
 }
