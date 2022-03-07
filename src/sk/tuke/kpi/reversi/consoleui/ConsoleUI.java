@@ -8,19 +8,11 @@ import java.util.Scanner;
 public class ConsoleUI {
 
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
 
     private final Field field;
     private final Scanner scanner = new Scanner(System.in);
-    private Computer computer1 = null;
-    private Computer computer2 = null;
 
     public ConsoleUI(Field field) {
         this.field = field;
@@ -28,62 +20,36 @@ public class ConsoleUI {
 
     public void play() {
 
-        // determine if the game is PvP or PvAI or AIvAI
-        if(field.getPlayer1() instanceof Computer) computer1 = (Computer) field.getPlayer1();
-        else if(field.getPlayer2() instanceof Computer) computer2 = (Computer) field.getPlayer2();
-
-        // game loop
-        do {
-            printGame(); // prints game stats and field
-            if (!field.isMovePossible()) {
-                System.out.println("No moves possible, skipping turn!");
-                field.changeTurn();
-                if(!field.isMovePossible()) {
-                    System.out.println("No moves possible, skipping turn!");
-                    field.setState(GameState.FINISHED);
-                    break;
-                }
-
+        // getting player name(s)
+        switch (field.getGameMode()) {
+            case PLAYER_VS_PLAYER -> {
+                System.out.println("Player 1, please type your name: ");
+                field.getPlayer1().setName(scanner.next());
+                System.out.println("Player 2, please type your name: ");
+                field.getPlayer1().setName(scanner.next());
             }
-            if(field.getPlayerOnTurn() instanceof Computer) {
-                ((Computer) field.getPlayerOnTurn()).makeTurn();
-            } else processInput();
-
-        } while(field.getState() == GameState.PLAYING);
-
-        // finished situations
-        if(field.getState() == GameState.FINISHED) {
-            printField();
-            if(field.getPlayer1().getScore() > field.getPlayer2().getScore()) {
-                System.out.println("Player " + field.getPlayer1().getName() + " won!");
+            case PLAYER_VS_AI -> {
+                System.out.println("Please type your name: ");
+                field.getPlayer1().setName(scanner.next());
             }
-            else if(field.getPlayer1().getScore() < field.getPlayer2().getScore())
-                System.out.println("Player " + field.getPlayer2().getName() + " won!");
-            else System.out.println("Tie! Nobody won!");
         }
 
-
-
-        /*
+        // main game loop
         do {
             printGame();
             processInput();
         } while(field.getState() == GameState.PLAYING);
-
         printGame();
 
         // finished situations
         if(field.getState() == GameState.FINISHED) {
             printField();
-            if(field.getPlayer1().getScore() > field.getPlayer2().getScore()) {
+            if (field.getPlayer1().getScore() > field.getPlayer2().getScore()) {
                 System.out.println("Player " + field.getPlayer1().getName() + " won!");
-            }
-            else if(field.getPlayer1().getScore() < field.getPlayer2().getScore())
+            } else if (field.getPlayer1().getScore() < field.getPlayer2().getScore())
                 System.out.println("Player " + field.getPlayer2().getName() + " won!");
             else System.out.println("Tie! Nobody won!");
         }
-
-         */
     }
 
     public void printGame() {
@@ -123,12 +89,6 @@ public class ConsoleUI {
 
     public void processInput() {
 
-        Player player = field.getPlayerOnTurn();
-        if(player instanceof Computer) {
-            ((Computer) player).makeTurn();
-            return;
-        }
-
         int row, col;
         try {
             row = scanner.nextInt() - 1;
@@ -143,18 +103,12 @@ public class ConsoleUI {
         try {
             field.addStoneToField(field.getPlayerOnTurn(), row, col);
         } catch (Exception e) {
-            System.out.println("Wrong input");
+            if(e instanceof Field.NoPossibleMovesException) {
+                System.out.println("No more moves are possible. Both players skipped a move.");
+                return;
+            }
+            System.out.println(e.getMessage());
+            System.out.println("Try again!");
         }
-        /*
-        if(field.isPositionOutOfBounds(row, col)) {
-            System.out.println("Your input is out of bounds. Try again!");
-            return;
-        }
-
-        if(!field.addStoneToField(field.getPlayerOnTurn(), row,col)) {
-            System.out.println("You can not place a stone in this position. Try again!");
-        }
-
-         */
     }
 }

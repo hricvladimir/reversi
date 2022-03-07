@@ -5,69 +5,42 @@ import sk.tuke.kpi.reversi.core.*;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class FieldTest {
     private final Field field;
-    private Computer player1;
-    private Computer player2;
     private int size;
 
     public FieldTest() {
-        Computer player1 = new Computer("testplayer1", 'R');
-        Computer player2 = new Computer("testplayer2", 'B');
-        this.player1 = player1;
-        this.player2 = player2;
+        Computer player1 = new Computer("testplayer1", 'B');
+        Computer player2 = new Computer("testplayer2", 'R');
         Random randomGenerator = new Random();
         size = randomGenerator.nextInt(10) +5;
-        field = new Field(size, player1, player2);
+        field = new Field(GameMode.PLAYER_VS_AI, size);
     }
 
     @Test
-    public void addingStoneShouldChangePlayer() {
-        Computer playerOnTurn = (Computer)field.getPlayerOnTurn();
-        int freeTilesInField = field.getFreeTiles();
-        playerOnTurn.makeTurn();
-        if(freeTilesInField > field.getFreeTiles()) {
-            assertNotSame(playerOnTurn, field.getPlayerOnTurn(), "Player was not changed after adding stone.");
+    public void whenBothPlayersCantMoveGameShouldFinish() {
+        for(int row = 0; row < size; row++) {
+            for(int col = 0; col < size; col++) {
+                if(row == size-1 && col == size-1) {
+                    break;
+                }
+                if(field.getTiles()[row][col].getTileState() != TileState.OCCUPIED) {
+                    field.getTiles()[row][col].occupyTile(new Stone(field.getPlayerOnTurn()));
+                }
+            }
         }
-        else assertSame(playerOnTurn, field.getPlayerOnTurn(), "Stone was not added to the field, but the player changed.");
-
-    }
-
-    @Test
-    public void placingStonesShouldDecreaseEmptyTiles() {
-        int freeTiles = field.getFreeTiles();
-
-
-        for(int i = 0; i < 10; i++) {
-            if(field.getPlayerOnTurn() instanceof Computer) ((Computer) field.getPlayerOnTurn()).makeTurn();
+        field.changeTurn();
+        try {
+            field.addStoneToField(field.getPlayerOnTurn(), size-1, size-1);
+        } catch (Exception e) {
+            if(e instanceof Field.NoPossibleMovesException) {
+                System.out.println("No more moves are possible. Both players skipped a move.");
+            }
+            else System.out.println("Other error during test.");
         }
-
-        assertNotEquals(field.getFreeTiles(), freeTiles, "Free tiles should decrease after adding stones.");
+        assertSame(GameState.FINISHED, field.getState());
     }
-
-    @Test
-    public void sizeShouldCorrespondToRandomlyGeneratedSize() {
-        assertEquals(field.getSize(), size, "Field size should be the same as randomly generated size. " +
-                "randomly generated size == " + size + "; actual size == " + field.getSize());
-    }
-
-    @Test
-    public void addingStoneShouldBeInCorrectPosition() {
-
-        Field field = new Field(player1, player2);
-
-        int row;
-        int col;
-        do {
-            row = (int) (Math.random() * field.getSize());
-            col = (int) (Math.random() * field.getSize());
-        } while(!field.addStoneToField(field.getPlayerOnTurn(), row, col) && field.getState() != GameState.FINISHED);
-
-        assertNotEquals(field.getTiles()[row][col].getTileState(), TileState.FREE);
-
-    }
-
-
 }

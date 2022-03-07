@@ -7,9 +7,14 @@ public class Computer extends Player{
     public Computer(String name, char color) {
         super(name, color);
     }
+    public Computer(char color) {
+        super(color);
+    }
 
-    public void makeTurn() {
-        if(!field.isMovePossible()) return;
+    public void makeTurn() throws Exception {
+        if(!field.isMovePossible()) {
+            throw new Exception("Computer was unable to make a turn!");
+        }
         int size = field.getSize();
 
         int row;
@@ -18,7 +23,8 @@ public class Computer extends Player{
         do {
             row = (int) (Math.random() *size);
             col = (int) (Math.random() *size);
-        } while(!field.addStoneToField(this, row, col) && field.getState() != GameState.FINISHED);
+        } while(!field.isMovePossible(row, col));
+        field.addStoneToField(this, row, col);
     }
 
     public void advancedTurn() {
