@@ -6,15 +6,20 @@ public class Player {
     private int score;
 
     public Player(String name, char color) {
-        if(name == null) return;
-        if(color != 'B' && color != 'R') return;
-
         this.name = name;
+        this.color = color;
+    }
+    public Player(char color) {
+        this.name = "player";
         this.color = color;
     }
 
     public char getColor() {
         return color;
+    }
+
+    public void setColor(char color) {
+        this.color = color;
     }
 
     public String getName() {
@@ -31,5 +36,9 @@ public class Player {
 
     public void incrementScore() {
         this.score += 1;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
