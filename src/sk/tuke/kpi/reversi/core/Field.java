@@ -9,6 +9,7 @@ public class Field {
     private Player player2;
     private Player playerOnTurn;
     private GameState state = GameState.PLAYING;
+    private Difficulty difficulty = Difficulty.EASY;
     private final GameMode gameMode;
 
     public Field(GameMode gameMode) { // default size
@@ -105,7 +106,12 @@ public class Field {
         }
         updateScore();
 
-        if(getPlayerOnTurn() instanceof Computer) ((Computer) getPlayerOnTurn()).makeTurn();
+        if(getPlayerOnTurn() instanceof Computer) {
+            if(difficulty == Difficulty.EASY)
+                ((Computer) getPlayerOnTurn()).makeTurn();
+            else if(difficulty == Difficulty.HARD)
+                ((Computer) getPlayerOnTurn()).makeAdvancedTurn();
+        }
     }
 
     private void updateScore() {
@@ -205,6 +211,7 @@ public class Field {
     }
 
     private void verticalCheck(int row, int col) {
+
 
         // left
         for(int i = row; i >= 0; i--) {
@@ -367,6 +374,14 @@ public class Field {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }
 
