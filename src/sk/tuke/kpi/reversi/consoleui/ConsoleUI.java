@@ -36,6 +36,7 @@ public class ConsoleUI {
 
         // main game loop
         do {
+            System.out.println(field.getFreeTiles());
             printGame();
             processInput();
         } while(field.getState() == GameState.PLAYING);
