@@ -15,7 +15,7 @@ public class Field {
         this.size = 8;
         this.gameMode = gameMode;
         initializePlayers();
-        initializeField(size, player1, player2);
+        initializeField(size);
     }
 
     public Field(GameMode gameMode, int size) { // custom size
@@ -24,7 +24,7 @@ public class Field {
         this.size = size;
         this.gameMode = gameMode;
         initializePlayers();
-        initializeField(size, player1, player2);
+        initializeField(size);
     }
 
     private void initializePlayers() {
@@ -38,26 +38,22 @@ public class Field {
                 this.player2 = new Computer("Computer", 'R');
             }
         }
-    }
-
-    private void initializeField(int size, Player player1, Player player2) {
-
-        this.player1 = player1;
-        this.player2 = player2;
-
+        playerOnTurn = player1;
         if(player1 instanceof Computer)
             ((Computer) player1).setField(this);
         if(player2 instanceof Computer)
             ((Computer) player2).setField(this);
 
-        createField();
-        playerOnTurn = player1;
-        updateScore();
+    }
 
-        stoneInitialization(player1, size/2-1, size/2-1);
-        stoneInitialization(player1, size/2, size/2);
-        stoneInitialization(player2, size/2, size/2-1);
-        stoneInitialization(player2, size/2-1, size/2);
+    private void initializeField(int size) {
+        // creates field and initializes it to starting position
+        createField();
+        stoneInitialization(player1, size/2, size/2-1);
+        stoneInitialization(player1, size/2-1, size/2);
+        stoneInitialization(player2, size/2-1, size/2-1);
+        stoneInitialization(player2, size/2, size/2);
+        updateScore();
     }
 
     public void createField() {
@@ -75,48 +71,41 @@ public class Field {
     }
 
     private void stoneInitialization(Player player, int row, int col) {
+        // factory method for Stones
         Stone stone = new Stone(player);
         this.tiles[row][col].occupyTile(stone);
-        freeTiles--;
+        freeTiles -= 1;
     }
 
     public void addStoneToField(Player player, int row, int col) throws Exception{
 
         if(!isMovePossible()) changeTurn();
         if(!isMovePossible()) {
-            state = GameState.FINISHED;
+            state = GameState.FINISHED; // two consecutive skips result in early game finish
             throw new NoPossibleMovesException();
         }
 
+        // exceptions handling
         if(state == GameState.FINISHED) throw new IllegalGameStateException("The game is already finished!");
-        if(getPlayerOnTurn().getColor() == 'x') throw new Exception("Player colors were not set!");
-        if(tiles[row][col].getTileState() == TileState.OCCUPIED) throw new IllegalMoveException("This tile is occupied!");
         if(isPositionOutOfBounds(row, col)) throw new IllegalMoveException("The given coordinates are out of bounds!");
-
+        if(tiles[row][col].getTileState() == TileState.OCCUPIED) throw new IllegalMoveException("This tile is occupied!");
 
         markStones(row, col);
+        // change colors, if no colors are changed, returns false
         if(!changeColors()) throw new IllegalMoveException("You cannot place a stone here.");
 
+        // if at least one color changed, add stone to field
         changeTurn();
         stoneInitialization(player, row, col);
-        freeTiles -= 1;
-        if(freeTiles == 0) state = GameState.FINISHED;
+
+        if(freeTiles == 0) {
+            state = GameState.FINISHED;
+            updateScore();
+            return;
+        }
         updateScore();
 
         if(getPlayerOnTurn() instanceof Computer) ((Computer) getPlayerOnTurn()).makeTurn();
-    }
-
-    public static class IllegalMoveException extends Exception{
-        public IllegalMoveException(String message) {
-            super(message);
-        }
-    }
-    public static class NoPossibleMovesException extends Exception {}
-
-    public static class IllegalGameStateException extends Exception{
-        public IllegalGameStateException(String message) {
-            super(message);
-        }
     }
 
     private void updateScore() {
@@ -188,7 +177,6 @@ public class Field {
                 if(tiles[row][col].getTileState() != TileState.FREE)
                     if(tiles[row][col].getStone().shouldChange()) {
                         tiles[row][col].getStone().setShouldChange(false);
-                        System.out.println("row: " + (row+1) + "; col: " + (col+1));
                         didChange = true;
                     }
             }
@@ -328,6 +316,19 @@ public class Field {
         }
     }
 
+    public static class IllegalMoveException extends Exception{
+        public IllegalMoveException(String message) {
+            super(message);
+        }
+    }
+    public static class NoPossibleMovesException extends Exception {}
+
+    public static class IllegalGameStateException extends Exception{
+        public IllegalGameStateException(String message) {
+            super(message);
+        }
+    }
+
     public Tile[][] getTiles() {
         return tiles;
     }
@@ -359,4 +360,13 @@ public class Field {
     public GameMode getGameMode() {
         return gameMode;
     }
+
+    public int getFreeTiles() {
+        return freeTiles;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
 }
+
