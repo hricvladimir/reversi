@@ -3,6 +3,7 @@ package sk.tuke.kpi.reversi.consoleui;
 import sk.tuke.kpi.reversi.core.*;
 
 import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -10,6 +11,7 @@ public class ConsoleUI {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_GREEN = "\u001B[32m";
 
     private final Field field;
     private final Scanner scanner = new Scanner(System.in);
@@ -21,6 +23,25 @@ public class ConsoleUI {
     public void play() {
 
         // getting player name(s)
+        getGameSettingsFromUser();
+
+        // main game loop
+        do {
+            printGame();
+            processInput();
+        } while(field.getState() == GameState.PLAYING);
+
+        // finished situations
+        printField();
+        if (field.getPlayer1().getScore() > field.getPlayer2().getScore())
+            System.out.println("Player " + field.getPlayer1().getName() + " won!");
+        else if (field.getPlayer1().getScore() < field.getPlayer2().getScore())
+            System.out.println("Player " + field.getPlayer2().getName() + " won!");
+        else System.out.println("Tie! Nobody won!");
+
+    }
+
+    private void getGameSettingsFromUser() {
         switch (field.getGameMode()) {
             case PLAYER_VS_PLAYER -> {
                 System.out.println("Player 1, please type your name: ");
@@ -31,30 +52,37 @@ public class ConsoleUI {
             case PLAYER_VS_AI -> {
                 System.out.println("Please type your name: ");
                 field.getPlayer1().setName(scanner.next());
+                determineDifficulty();
             }
         }
+    }
 
-        // main game loop
+    private void determineDifficulty() {
+        Difficulty difficulty = null;
+
         do {
-            System.out.println(field.getFreeTiles());
-            printGame();
-            processInput();
-        } while(field.getState() == GameState.PLAYING);
-        printGame();
+            System.out.println("_______________________________________________");
+            System.out.println("Pick difficulty " + ANSI_GREEN + "([e]asy" + ANSI_RESET + "/" + ANSI_RED + "[h]ard):" + ANSI_RESET);
+            String userInput = scanner.next();
 
-        // finished situations
-        if(field.getState() == GameState.FINISHED) {
-            printField();
-            if (field.getPlayer1().getScore() > field.getPlayer2().getScore()) {
-                System.out.println("Player " + field.getPlayer1().getName() + " won!");
-            } else if (field.getPlayer1().getScore() < field.getPlayer2().getScore())
-                System.out.println("Player " + field.getPlayer2().getName() + " won!");
-            else System.out.println("Tie! Nobody won!");
+            if(Objects.equals(userInput, "easy") || Objects.equals(userInput, "e")) difficulty = Difficulty.EASY;
+            else if(Objects.equals(userInput, "hard") || Objects.equals(userInput, "h")) difficulty = Difficulty.HARD;
+            else {
+                System.out.println("Wrong input!!!");
+            }
         }
+        while(difficulty == null);
+
+        field.setDifficulty(difficulty);
+        System.out.println("Difficulty set to: ");
+        if(difficulty == Difficulty.EASY)
+            System.out.println(ANSI_GREEN + "EASY" + ANSI_RESET);
+        else System.out.println(ANSI_RED + "HARD" + ANSI_RESET);
     }
 
     public void printGame() {
         //for (int i = 0; i < 50; ++i) System.out.println();
+        System.out.println("_______________________________________________");
         System.out.println("\nType two numbers [row] [col] and press Enter");
         printGameStats();
         printField();
