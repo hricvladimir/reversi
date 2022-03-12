@@ -1,8 +1,8 @@
-package sk.tuke.kpi.reversi;
+package main.java.sk.tuke.kpi.reversi;
 
-import sk.tuke.kpi.reversi.consoleui.ConsoleUI;
-import sk.tuke.kpi.reversi.core.Field;
-import sk.tuke.kpi.reversi.core.GameMode;
+import main.java.sk.tuke.kpi.reversi.consoleui.ConsoleUI;
+import main.java.sk.tuke.kpi.reversi.core.Field;
+import main.java.sk.tuke.kpi.reversi.core.GameMode;
 
 public class Main {
     public static void main(String[] args) {
