@@ -1,4 +1,4 @@
-package sk.tuke.kpi.reversi.core;
+package main.java.sk.tuke.kpi.reversi.core;
 
 public class Field {
 
@@ -78,7 +78,7 @@ public class Field {
         freeTiles -= 1;
     }
 
-    public void addStoneToField(Player player, int row, int col) throws Exception{
+    public void addStoneToField(Player player, int row, int col) throws Exception {
 
         if(!isMovePossible()) changeTurn();
         if(!isMovePossible()) {

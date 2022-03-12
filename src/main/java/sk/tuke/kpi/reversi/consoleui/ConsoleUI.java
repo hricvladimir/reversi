@@ -1,6 +1,6 @@
-package sk.tuke.kpi.reversi.consoleui;
+package main.java.sk.tuke.kpi.reversi.consoleui;
 
-import sk.tuke.kpi.reversi.core.*;
+import main.java.sk.tuke.kpi.reversi.core.*;
 
 import java.util.InputMismatchException;
 import java.util.Objects;
@@ -29,6 +29,8 @@ public class ConsoleUI {
         do {
             printGame();
             processInput();
+
+
         } while(field.getState() == GameState.PLAYING);
 
         // finished situations

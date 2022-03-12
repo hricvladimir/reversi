@@ -1,4 +1,4 @@
-package sk.tuke.kpi.reversi.core;
+package main.java.sk.tuke.kpi.reversi.core;
 
 public class Computer extends Player{
 
@@ -40,7 +40,7 @@ public class Computer extends Player{
     }
 
     public void makeAdvancedTurn() throws Exception {
-        // WARNING - works only with size 8!
+
         if(!field.isMovePossible())
             throw new Exception("Computer was unable to make a turn!");
 
@@ -56,8 +56,10 @@ public class Computer extends Player{
                     maxRow = row;
                     maxCol = col;
                     maxMarked = counted;
+                    continue;
                 }
-                else if(counted == maxMarked && checkPriority(row, col, maxRow, maxCol)) {
+                if(counted == maxMarked && field.getSize() == 8) { // WARNING - works only with size 8!
+                    if(!checkPriority(row, col, maxRow, maxCol)) continue;
                     maxRow = row;
                     maxCol = col;
                 }
