@@ -1,4 +1,4 @@
-package main.java.sk.tuke.kpi.reversi.core;
+package sk.tuke.kpi.reversi.core;
 
 public enum GameState {
     PLAYING,

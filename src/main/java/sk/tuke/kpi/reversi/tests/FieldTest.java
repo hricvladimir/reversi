@@ -1,8 +1,8 @@
-package main.java.sk.tuke.kpi.reversi.tests;
+package sk.tuke.kpi.reversi.tests;
 
 import org.junit.jupiter.api.Test;
 import java.util.Random;
-import main.java.sk.tuke.kpi.reversi.core.*;
+import sk.tuke.kpi.reversi.core.*;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class FieldTest {

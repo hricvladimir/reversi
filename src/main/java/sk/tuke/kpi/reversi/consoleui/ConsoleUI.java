@@ -1,6 +1,6 @@
-package main.java.sk.tuke.kpi.reversi.consoleui;
+package sk.tuke.kpi.reversi.consoleui;
 
-import main.java.sk.tuke.kpi.reversi.core.*;
+import sk.tuke.kpi.reversi.core.*;
 
 import java.util.InputMismatchException;
 import java.util.Objects;
