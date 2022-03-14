@@ -13,4 +13,5 @@ public class Main {
         ConsoleUI consoleUI = new ConsoleUI(field);
         consoleUI.play();
     }
+
 }
