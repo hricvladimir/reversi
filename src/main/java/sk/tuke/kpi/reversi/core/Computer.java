@@ -24,6 +24,12 @@ public class Computer extends Player{
     }
 
     public void makeTurn() throws Exception {
+        if(field.getDifficulty() == Difficulty.EASY)
+            randomTurn();
+        else advancedTurn();
+    }
+
+    private void randomTurn() throws Exception {
         if(!field.isMovePossible())
             throw new Exception("Computer was unable to make a turn!");
 
@@ -39,7 +45,7 @@ public class Computer extends Player{
         field.addStoneToField(this, row, col);
     }
 
-    public void makeAdvancedTurn() throws Exception {
+    private void advancedTurn() throws Exception {
 
         if(!field.isMovePossible())
             throw new Exception("Computer was unable to make a turn!");
