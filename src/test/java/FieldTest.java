@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 import java.util.Random;
-import sk.tuke.kpi.reversi.core.*;
+
+import sk.tuke.gamestudio.game.reversi.core.*;
+
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class FieldTest {
