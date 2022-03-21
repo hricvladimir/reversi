@@ -26,12 +26,19 @@ public class ConsoleUI {
         getGameSettingsFromUser();
 
         // main game loop
-        do {
-            printGame();
-            processInput();
-
-
-        } while(field.getState() == GameState.PLAYING);
+        if(field.getGameMode() == GameMode.PLAYER_VS_AI)
+            do {
+                printGame();
+                processInput();
+                printGame();
+                processComputerMove();
+            } while(field.getState() == GameState.PLAYING);
+        else {
+            do {
+                printGame();
+                processInput();
+            } while(field.getState() == GameState.PLAYING);
+        }
 
         // finished situations
         printField();
@@ -41,6 +48,14 @@ public class ConsoleUI {
             System.out.println("Player " + field.getPlayer2().getName() + " won!");
         else System.out.println("Tie! Nobody won!");
 
+    }
+
+    private void processComputerMove() {
+        if(field.getPlayerOnTurn() instanceof Computer) {
+            try {
+                ((Computer) field.getPlayerOnTurn()).makeTurn();
+            } catch (Exception ignored) {}
+        }
     }
 
     private void getGameSettingsFromUser() {

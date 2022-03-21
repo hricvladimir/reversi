@@ -105,13 +105,15 @@ public class Field {
             return;
         }
         updateScore();
-
+        /*
         if(getPlayerOnTurn() instanceof Computer) {
             if(difficulty == Difficulty.EASY)
                 ((Computer) getPlayerOnTurn()).makeTurn();
             else if(difficulty == Difficulty.HARD)
                 ((Computer) getPlayerOnTurn()).makeAdvancedTurn();
         }
+        */
+
     }
 
     private void updateScore() {
@@ -323,14 +325,14 @@ public class Field {
         }
     }
 
-    public static class IllegalMoveException extends Exception{
+    public class IllegalMoveException extends Exception{
         public IllegalMoveException(String message) {
             super(message);
         }
     }
-    public static class NoPossibleMovesException extends Exception {}
+    public class NoPossibleMovesException extends Exception {}
 
-    public static class IllegalGameStateException extends Exception{
+    public class IllegalGameStateException extends Exception{
         public IllegalGameStateException(String message) {
             super(message);
         }

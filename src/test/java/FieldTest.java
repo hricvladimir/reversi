@@ -1,13 +1,10 @@
-package sk.tuke.kpi.reversi.tests;
-
 import org.junit.jupiter.api.Test;
 import java.util.Random;
 import sk.tuke.kpi.reversi.core.*;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class FieldTest {
-    private int size;
-    Random randomGenerator = new Random();
+    private final Random randomGenerator = new Random();
 
     public FieldTest() {
         Computer player1 = new Computer("testplayer1", 'B');
@@ -18,13 +15,13 @@ public class FieldTest {
     @Test
     public void whenBothPlayersCantMoveGameShouldFinish() {
 
-        size = 6;
+        int size = 6;
 
         Field field = new Field(GameMode.PLAYER_VS_AI, size);
         field.changeTurn();
         for(int row = 0; row < size; row++) {
             for(int col = 0; col < size; col++) {
-                if(row == size-1 && col == size-1) {
+                if(row == size -1 && col == size -1) {
                     break;
                 }
                 if(field.getTiles()[row][col].getTileState() != TileState.OCCUPIED) {
@@ -34,7 +31,7 @@ public class FieldTest {
         }
         field.changeTurn();
         try {
-            field.addStoneToField(field.getPlayerOnTurn(), size-1, size-1);
+            field.addStoneToField(field.getPlayerOnTurn(), size -1, size -1);
         } catch (Exception e) {
             if(e instanceof Field.NoPossibleMovesException) {
                 System.out.println("No more moves are possible. Both players skipped a move.");
