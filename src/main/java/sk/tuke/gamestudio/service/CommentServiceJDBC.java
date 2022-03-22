@@ -15,14 +15,14 @@ public class CommentServiceJDBC implements CommentService{
     public static final String JDBC_USER = "postgres";
     public static final String JDBC_PASSWORD = "sardinki";
     public static final String DELETE_STATEMENT = "DELETE FROM comment";
-    public static final String SELECT_STATEMENT = "SELECT player, game, points, played_at FROM comment WHERE game = ?";
-    public static final String INSERT_STATEMENT = "INSERT INTO comment (player, game, points, played_at) VALUES (?, ?, ?, ?)";
+    public static final String SELECT_STATEMENT = "SELECT player, game, comment, commentedOn FROM comment WHERE game = ?";
+    public static final String INSERT_STATEMENT = "INSERT INTO comment (player, game, comment, commentedOn) VALUES (?, ?, ?, ?)";
 
     @Override
     public void addComment(Comment comment) throws CommentException{
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.prepareStatement(INSERT_STATEMENT);
+                var statement = connection.prepareStatement(INSERT_STATEMENT)
         )
         {
             statement.setString(1, comment.getPlayer());
@@ -40,7 +40,7 @@ public class CommentServiceJDBC implements CommentService{
     public List<Comment> getComments(String game) throws CommentException {
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.prepareStatement(SELECT_STATEMENT);
+                var statement = connection.prepareStatement(SELECT_STATEMENT)
         )
         {
             statement.setString(1, game);
@@ -60,7 +60,7 @@ public class CommentServiceJDBC implements CommentService{
     public void reset() throws CommentException{
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.createStatement();
+                var statement = connection.createStatement()
         )
         {
             statement.executeUpdate(DELETE_STATEMENT);

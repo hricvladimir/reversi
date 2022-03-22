@@ -16,13 +16,13 @@ public class RatingServiceJDBC implements RatingService {
     public static final String DELETE_STATEMENT = "DELETE FROM rating";
     public static final String SELECT_RATING_STATEMENT = "SELECT rating FROM rating WHERE game = ? AND player = ?";
     public static final String SELECT_AVERAGE_RATING_STATEMENT = "SELECT AVG(rating) FROM rating WHERE game = ?";
-    public static final String INSERT_STATEMENT = "INSERT INTO rating (player, game, rating, ratedOn) VALUES (?, ?, ?, ?) ON CONFLICT (game, player) DO UPDATE SET rating = ?";
+    public static final String INSERT_STATEMENT = "INSERT INTO rating (player, game, rating, ratedOn) VALUES (?, ?, ?, ?) ON CONFLICT (player, game) DO UPDATE SET rating = ?";
 
     @Override
     public void setRating(Rating rating) throws RatingException {
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.prepareStatement(INSERT_STATEMENT);
+                var statement = connection.prepareStatement(INSERT_STATEMENT)
         )
         {
             statement.setString(1, rating.getPlayer());
@@ -41,7 +41,7 @@ public class RatingServiceJDBC implements RatingService {
     public int getAverageRating(String game) throws RatingException {
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.prepareStatement(SELECT_AVERAGE_RATING_STATEMENT);
+                var statement = connection.prepareStatement(SELECT_AVERAGE_RATING_STATEMENT)
         )
         {
             statement.setString(1, game);
@@ -59,11 +59,12 @@ public class RatingServiceJDBC implements RatingService {
     public int getRating(String game, String player) throws RatingException {
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.prepareStatement(SELECT_RATING_STATEMENT);
+                var statement = connection.prepareStatement(SELECT_RATING_STATEMENT)
         )
         {
-            statement.setString(1, game);
             statement.setString(2, player);
+            statement.setString(1, game);
+
             try(var rs = statement.executeQuery()) {
                 rs.next();
                 return rs.getInt("rating");
@@ -77,7 +78,7 @@ public class RatingServiceJDBC implements RatingService {
     public void reset() throws RatingException {
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.createStatement();
+                var statement = connection.createStatement()
         )
         {
             statement.executeUpdate(DELETE_STATEMENT);
