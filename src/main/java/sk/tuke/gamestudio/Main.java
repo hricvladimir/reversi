@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.game.reversi;
+package sk.tuke.gamestudio;
 
 import sk.tuke.gamestudio.game.reversi.consoleui.ConsoleUI;
 import sk.tuke.gamestudio.game.reversi.core.Field;

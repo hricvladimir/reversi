@@ -1,6 +1,10 @@
 package sk.tuke.gamestudio.game.reversi.consoleui;
+import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.reversi.core.*;
+import sk.tuke.gamestudio.service.ScoreService;
+import sk.tuke.gamestudio.service.ScoreServiceJDBC;
 
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
@@ -14,13 +18,14 @@ public class ConsoleUI {
 
     private final Field field;
     private final Scanner scanner = new Scanner(System.in);
+    private ScoreService scoreService = new ScoreServiceJDBC();
 
     public ConsoleUI(Field field) {
         this.field = field;
     }
 
     public void play() {
-
+        printTopScores();
         // getting player name(s)
         getGameSettingsFromUser();
 
@@ -41,12 +46,23 @@ public class ConsoleUI {
 
         // finished situations
         printField();
-        if (field.getPlayer1().getScore() > field.getPlayer2().getScore())
-            System.out.println("Player " + field.getPlayer1().getName() + " won!");
-        else if (field.getPlayer1().getScore() < field.getPlayer2().getScore())
-            System.out.println("Player " + field.getPlayer2().getName() + " won!");
-        else System.out.println("Tie! Nobody won!");
+        if (field.getPlayer1().getScore() > field.getPlayer2().getScore()) {
+            Player winningPlayer = field.getPlayer1();
+            System.out.println("Player " + winningPlayer.getName() + " won!");
+            // adding winning player to score database if player is not a computer
+            if(!(winningPlayer instanceof Computer))
+                scoreService.addScore(new Score(winningPlayer.getName(), "reversi", winningPlayer.getScore(), new Date()));
+        }
 
+        else if (field.getPlayer1().getScore() < field.getPlayer2().getScore()) {
+            Player winningPlayer = field.getPlayer2();
+            System.out.println("Player " + winningPlayer.getName() + " won!");
+            // adding winning player to score database if player is not a computer
+            if(!(winningPlayer instanceof Computer))
+                scoreService.addScore(new Score(winningPlayer.getName(), "reversi", winningPlayer.getScore(), new Date()));
+        }
+
+        else System.out.println("Tie! Nobody won!");
     }
 
     private void processComputerMove() {
@@ -155,5 +171,15 @@ public class ConsoleUI {
             System.out.println(e.getMessage());
             System.out.println("Try again!");
         }
+    }
+
+    private void printTopScores() {
+        System.out.println("*---------- TOP SCORES ----------*");
+        var scores = scoreService.getTopScores("reversi");
+        for(int i = 0; i < scores.size(); i++) {
+            var score = scores.get(i);
+            System.out.printf("%d. %s %d\n", i+1, score.getPlayer(), score.getPoints());
+        }
+        System.out.println("*--------------------------------*\n");
     }
 }
