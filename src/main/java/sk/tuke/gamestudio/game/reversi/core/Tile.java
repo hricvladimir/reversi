@@ -1,4 +1,4 @@
-package sk.tuke.kpi.reversi.core;
+package sk.tuke.gamestudio.game.reversi.core;
 
 public class Tile {
 

@@ -1,8 +1,8 @@
-package sk.tuke.kpi.reversi;
+package sk.tuke.gamestudio;
 
-import sk.tuke.kpi.reversi.consoleui.ConsoleUI;
-import sk.tuke.kpi.reversi.core.*;
-import sk.tuke.kpi.reversi.core.GameMode;
+import sk.tuke.gamestudio.game.reversi.consoleui.ConsoleUI;
+import sk.tuke.gamestudio.game.reversi.core.Field;
+import sk.tuke.gamestudio.game.reversi.core.GameMode;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,5 +13,4 @@ public class Main {
         ConsoleUI consoleUI = new ConsoleUI(field);
         consoleUI.play();
     }
-
 }
