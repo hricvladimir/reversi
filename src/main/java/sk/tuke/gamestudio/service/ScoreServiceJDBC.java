@@ -14,14 +14,14 @@ public class ScoreServiceJDBC implements ScoreService{
     public static final String JDBC_USER = "postgres";
     public static final String JDBC_PASSWORD = "sardinki";
     public static final String DELETE_STATEMENT = "DELETE FROM score";
-    public static final String SELECT_STATEMENT = "SELECT player, game, comment, playedOn FROM score WHERE game = ? odrer by points desc LIMIT 10";
+    public static final String SELECT_STATEMENT = "SELECT player, game, points, playedOn FROM score WHERE game = ? order by points desc LIMIT 10";
     public static final String INSERT_STATEMENT = "INSERT INTO score (player, game, points, playedOn) VALUES (?, ?, ?, ?)";
 
     @Override
     public void addScore(Score score) throws ScoreException{
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.prepareStatement(INSERT_STATEMENT);
+                var statement = connection.prepareStatement(INSERT_STATEMENT)
         )
         {
             statement.setString(1, score.getPlayer());
@@ -39,7 +39,7 @@ public class ScoreServiceJDBC implements ScoreService{
     public List<Score> getTopScores(String game) throws ScoreException{
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.prepareStatement(SELECT_STATEMENT);
+                var statement = connection.prepareStatement(SELECT_STATEMENT)
         )
         {
             statement.setString(1, game);
@@ -59,7 +59,7 @@ public class ScoreServiceJDBC implements ScoreService{
     public void reset() throws ScoreException{
         try (
                 var connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-                var statement = connection.createStatement();
+                var statement = connection.createStatement()
         )
         {
             var rs =  statement.executeUpdate(DELETE_STATEMENT);
