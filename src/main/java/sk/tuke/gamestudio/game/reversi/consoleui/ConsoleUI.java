@@ -1,8 +1,9 @@
 package sk.tuke.gamestudio.game.reversi.consoleui;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.reversi.core.*;
-import sk.tuke.gamestudio.service.ScoreService;
-import sk.tuke.gamestudio.service.ScoreServiceJDBC;
+import sk.tuke.gamestudio.service.*;
 
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -19,15 +20,16 @@ public class ConsoleUI {
     private final Field field;
     private final Scanner scanner = new Scanner(System.in);
     private ScoreService scoreService = new ScoreServiceJDBC();
+    private CommentService commentService = new CommentServiceJDBC();
+    private RatingServiceJDBC ratingService = new RatingServiceJDBC();
 
     public ConsoleUI(Field field) {
         this.field = field;
     }
 
     public void play() {
-        printTopScores();
-        // getting player name(s)
-        getGameSettingsFromUser();
+
+        menu(); // menu for user
 
         // main game loop
         if(field.getGameMode() == GameMode.PLAYER_VS_AI)
@@ -63,6 +65,185 @@ public class ConsoleUI {
         }
 
         else System.out.println("Tie! Nobody won!");
+    }
+
+    private void menu() {
+
+
+        int input = 999;
+        while(input != 1) {
+            printMenu();
+            input = getInput();
+            switch (input) {
+                case 1 -> getGameSettingsFromUser();
+                case 2 -> printTopScores();
+
+                case 3 -> printAllComments();
+
+                case 4 -> addComment();
+
+                case 5 -> rateGame();
+
+                case 6 -> showRating();
+
+                case 7 -> resetScores();
+
+                case 8 -> resetComments();
+
+                case 9 -> resetRatings();
+            }
+        }
+    }
+
+    private void printTopScores() {
+        System.out.println("* -------- TOP SCORES --------- *");
+        var scores = scoreService.getTopScores("reversi");
+        for(int i = 0; i < scores.size(); i++) {
+            var score = scores.get(i);
+            System.out.printf("%d. %s %d\n", i+1, score.getPlayer(), score.getPoints());
+        }
+        System.out.println("* ----------------------------- *\n");
+        System.out.println("Type anything and press enter to go back to the menu!");
+        scanner.next();
+    }
+
+    private void printAllComments() {
+        System.out.println("* --------- COMMENTS ---------- *");
+        var comments = commentService.getComments("reversi");
+        if(comments.isEmpty()) System.out.println("There are no comments yet. Be the first one to comment!");
+        for(Comment comment : comments) {
+            System.out.println(comment.getPlayer() + ": " + comment.getComment());
+        }
+        System.out.println("* ----------------------------- *");
+        System.out.println("Type anything and press enter to go back to the menu!");
+        scanner.next();
+    }
+
+    private void addComment() {
+        Scanner commentScanner = new Scanner(System.in);
+        System.out.print("Please input your name: ");
+        String name = commentScanner.next();
+        System.out.print("Please input your comment: ");
+        commentScanner.nextLine();
+        String message = commentScanner.nextLine();
+                Comment comment = new Comment(name, "reversi", message, new Date());
+        commentService.addComment(comment);
+    }
+
+    private void rateGame() {
+        Scanner ratingScanner = new Scanner(System.in);
+        System.out.print("Please input your name: ");
+        String name = ratingScanner.next();
+        System.out.print("Please input your rating (1 - 5): ");
+        int ratingScore;
+        try{
+            ratingScore = ratingScanner.nextInt();
+        } catch  (InputMismatchException exception) {
+            System.out.println("Wrong input! Rating was not added!");
+            return;
+        }
+        Rating rating = new Rating(name,  "reversi", ratingScore, new Date());
+        try {
+            ratingService.setRating(rating);
+        } catch (RatingException exception) {
+            System.out.println("The rating was not added!");
+        }
+
+    }
+
+    private void resetScores() {
+        System.out.println("Are you sure you want to reset the scores? yes(y)/no(n)");
+        Scanner resetScanner = new Scanner(System.in);
+        String answer = resetScanner.nextLine();
+        if(Objects.equals(answer, "yes") || Objects.equals(answer, "y")) {
+            scoreService.reset();
+            System.out.println("The scores were reseted!");
+        }
+    }
+
+    private void resetComments() {
+        System.out.println("Are you sure you want to reset the comments? yes(y)/no(n)");
+        Scanner resetScanner = new Scanner(System.in);
+        String answer = resetScanner.nextLine();
+        if(Objects.equals(answer, "yes") || Objects.equals(answer, "y")) {
+            commentService.reset();
+            System.out.println("The comments were reseted!");
+        }
+    }
+
+    private void resetRatings() {
+        System.out.println("Are you sure you want to reset the ratings? yes(y)/no(n)");
+        Scanner resetScanner = new Scanner(System.in);
+        String answer = resetScanner.nextLine();
+        if(Objects.equals(answer, "yes") || Objects.equals(answer, "y")) {
+            ratingService.reset();
+            System.out.println("The ratings were reseted!");
+        }
+    }
+
+    private void showRating() {
+
+        System.out.println(ANSI_RED + "* ---------- REVERSI ---------- *" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_BLUE + "\tPlease pick an option!" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 1: RATING" + ANSI_RED + "\t\t\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 2: AVERAGE RATING" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 3: BACK TO MENU" + ANSI_RED + "\t\t*" + ANSI_RESET);
+
+        int input = 999;
+        while(input != 3) {
+            input = getInput();
+            switch (input) {
+                case 1 -> {
+                    Scanner ratingScanner = new Scanner(System.in);
+                    System.out.println("Type your name to show your rating: ");
+                    String name = ratingScanner.nextLine();
+                    System.out.println("Player rating " + name + ": " + ratingService.getRating("reversi", name));
+                    input = 3;
+                    System.out.println("Type anything and press enter to go back to the menu!");
+                    scanner.next();
+                }
+                case 2 -> {
+                    System.out.println("Average rating is: " + ratingService.getAverageRating("reversi") + "/5");
+                    input = 3;
+                    System.out.println("Type anything and press enter to go back to the menu!");
+                    scanner.next();
+                }
+            }
+        }
+    }
+
+    private int getInput() {
+        int input;
+        do {
+            try {
+                System.out.println("> ");
+                input = scanner.nextInt();
+                if(input <= 0 || input >= 10) {
+                    System.out.println("Wrong option. Try again!");
+                    input = -1;
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Wrong input. Try again!");
+                scanner.next();
+                input = -1;
+            }
+        } while(input == -1);
+        return input;
+    }
+
+    private void printMenu() {
+        System.out.println(ANSI_RED + "* ---------- REVERSI ---------- *" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_BLUE + "\tWelcome to the game!" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_BLUE + "\tPlease pick an option!" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 1: PLAY GAME" + ANSI_RED + "\t\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 2: TOP SCORES" + ANSI_RED + "\t\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 3: COMMENTS" + ANSI_RED + "\t\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 4: ADD COMMENT" + ANSI_RED + "\t\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 5: RATE THE GAME" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 6: GAME RATINGS" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 7: RESET SCORES" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 8: RESET COMMENTS" + ANSI_RED + "\t\t*" + ANSI_RESET);
+        System.out.println(ANSI_RED + "*" + ANSI_GREEN + "\t\t 9: RESET RATINGS" + ANSI_RED + "\t\t*" + ANSI_RESET);
     }
 
     private void processComputerMove() {
@@ -171,15 +352,5 @@ public class ConsoleUI {
             System.out.println(e.getMessage());
             System.out.println("Try again!");
         }
-    }
-
-    private void printTopScores() {
-        System.out.println("*---------- TOP SCORES ----------*");
-        var scores = scoreService.getTopScores("reversi");
-        for(int i = 0; i < scores.size(); i++) {
-            var score = scores.get(i);
-            System.out.printf("%d. %s %d\n", i+1, score.getPlayer(), score.getPoints());
-        }
-        System.out.println("*--------------------------------*\n");
     }
 }
