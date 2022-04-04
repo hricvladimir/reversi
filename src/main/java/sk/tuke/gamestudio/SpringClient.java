@@ -12,7 +12,7 @@ import sk.tuke.gamestudio.game.reversi.consoleui.ConsoleUI;
 @SpringBootApplication
 @Configuration
 @EntityScan("sk.tuke.gamestudio.entity")
-@EnableJpaRepositories("sk.tuke.gamestudio.repository")
+@EnableJpaRepositories("sk.tuke.gamestudio.service.rating.repository")
 public class SpringClient {
     public static void main(String[] args) {
         SpringApplication.run(SpringClient.class);

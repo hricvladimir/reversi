@@ -1,13 +1,12 @@
 package sk.tuke.gamestudio.service.rating;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.repository.RatingRepository;
+import sk.tuke.gamestudio.service.rating.repository.RatingRepository;
 
-import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 
 @Transactional
 @Service
@@ -21,14 +20,14 @@ public class RatingServiceJPA implements RatingService {
         repository.save(rating);
     }
 
-    @Override
+    @Query
     public int getAverageRating(String game) throws RatingException {
-        return 0;
+        return repository.getAverage(game);
     }
 
     @Override
     public int getRating(String game, String player) throws RatingException {
-        return 0;
+        return repository.getRating(player,game);
     }
 
     @Override
