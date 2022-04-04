@@ -1,8 +1,19 @@
 package sk.tuke.gamestudio.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Score {
+@Entity
+public class Score implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+
     private String game;
 
     private String player;
@@ -11,11 +22,17 @@ public class Score {
 
     private Date playedOn;
 
+
+
     public Score(String player, String game, int points, Date playedOn) {
         this.game = game;
         this.player = player;
         this.points = points;
         this.playedOn = playedOn;
+    }
+
+    public Score() {
+
     }
 
     public String getGame() {
@@ -60,4 +77,12 @@ public class Score {
                 '}';
     }
 
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

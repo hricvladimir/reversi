@@ -2,9 +2,8 @@ package service;
 
 import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.service.CommentService;
-import sk.tuke.gamestudio.service.CommentServiceJDBC;
+import sk.tuke.gamestudio.service.comment.CommentService;
+import sk.tuke.gamestudio.service.comment.CommentServiceJDBC;
 
 import java.util.Date;
 import java.util.List;

@@ -1,15 +1,11 @@
 package service;
 
 import org.junit.jupiter.api.Test;
-import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.service.CommentService;
-import sk.tuke.gamestudio.service.CommentServiceJDBC;
-import sk.tuke.gamestudio.service.RatingException;
-import sk.tuke.gamestudio.service.RatingServiceJDBC;
+import sk.tuke.gamestudio.service.rating.RatingException;
+import sk.tuke.gamestudio.service.rating.RatingServiceJDBC;
 
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -21,7 +21,7 @@ public class FieldTest {
 
         int size = 6;
 
-        Field field = new Field(GameMode.PLAYER_VS_AI, size);
+        Field field = new Field();
         field.changeTurn();
         for(int row = 0; row < size; row++) {
             for(int col = 0; col < size; col++) {
@@ -47,7 +47,7 @@ public class FieldTest {
 
     @Test
     public void placingStoneColumnCheck() {
-        Field field = new Field(GameMode.PLAYER_VS_PLAYER);
+        Field field = new Field();
         field.getTiles()[3][3].occupyTile(new Stone(field.getPlayerOnTurn()));
         field.getTiles()[3][4].occupyTile(new Stone(field.getPlayerOnTurn()));
         field.getTiles()[3][5].occupyTile(new Stone(field.getPlayerOnTurn()));
@@ -70,7 +70,7 @@ public class FieldTest {
     }
     @Test
     public void placingStonesShouldDeceaseFreeTiles() {
-        Field field = new Field(GameMode.PLAYER_VS_PLAYER, 8);
+        Field field = new Field();
         int freeTiles = field.getFreeTiles();
 
         for(int i = 0; i < 10; i++) {
@@ -95,7 +95,7 @@ public class FieldTest {
 
     @Test
     public void placingStonesInWrongPositionShouldNotDeceaseFreeTiles() {
-        Field field = new Field(GameMode.PLAYER_VS_PLAYER, 8);
+        Field field = new Field();
         int freeTiles = field.getFreeTiles();
         try {
             for(int i = 0; i < 5; i++) {
@@ -111,7 +111,7 @@ public class FieldTest {
 
     @Test
     public void stoneShouldNotBeAddedInWrongPosition() {
-        Field field = new Field(GameMode.PLAYER_VS_PLAYER, 8);
+        Field field = new Field();
         int size = field.getSize();
         for(int row = 0; row < 2; row++) {
             for(int col = 0; col < size; col++) {
@@ -153,35 +153,8 @@ public class FieldTest {
     }
 
     @Test
-    public void fieldWithIncorrectSizeShouldNotBeCreated() {
-        int exceptions = 0;
-        try{
-            Field field1 = new Field(GameMode.PLAYER_VS_PLAYER,-10);
-        } catch(IllegalArgumentException e) {
-            exceptions++;
-        }
-        try{
-            Field field2 = new Field(GameMode.PLAYER_VS_PLAYER,-3);
-        } catch(IllegalArgumentException e) {
-            exceptions++;
-        }
-        try{
-            Field field3 = new Field(GameMode.PLAYER_VS_PLAYER,2);
-        } catch(IllegalArgumentException e) {
-            exceptions++;
-        }
-        try{
-            Field field4 = new Field(GameMode.PLAYER_VS_PLAYER,7);
-        } catch(IllegalArgumentException e) {
-            exceptions++;
-        }
-
-        assertSame(4, exceptions);
-    }
-
-    @Test
     public void ifFinishedStoneShouldNotBeAdded() {
-        Field field = new Field(GameMode.PLAYER_VS_PLAYER);
+        Field field = new Field();
         field.setState(GameState.FINISHED);
         try {
             field.addStoneToField(field.getPlayerOnTurn(), 4, 5);

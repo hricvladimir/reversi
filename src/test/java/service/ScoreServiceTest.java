@@ -2,12 +2,11 @@ package service;
 
 import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.service.ScoreService;
-import sk.tuke.gamestudio.service.ScoreServiceJDBC;
+import sk.tuke.gamestudio.service.score.ScoreService;
+import sk.tuke.gamestudio.service.score.ScoreServiceJDBC;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 

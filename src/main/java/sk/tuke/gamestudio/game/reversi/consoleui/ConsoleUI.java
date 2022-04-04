@@ -1,15 +1,23 @@
 package sk.tuke.gamestudio.game.reversi.consoleui;
+import org.springframework.stereotype.Component;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.game.reversi.core.*;
-import sk.tuke.gamestudio.service.*;
+import sk.tuke.gamestudio.service.comment.CommentService;
+import sk.tuke.gamestudio.service.comment.CommentServiceJPA;
+import sk.tuke.gamestudio.service.rating.RatingException;
+import sk.tuke.gamestudio.service.rating.RatingService;
+import sk.tuke.gamestudio.service.rating.RatingServiceJDBC;
+import sk.tuke.gamestudio.service.score.ScoreService;
+import sk.tuke.gamestudio.service.score.ScoreServiceJPA;
 
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
+@Component
 public class ConsoleUI {
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -19,16 +27,24 @@ public class ConsoleUI {
 
     private final Field field;
     private final Scanner scanner = new Scanner(System.in);
-    private ScoreService scoreService = new ScoreServiceJDBC();
-    private CommentService commentService = new CommentServiceJDBC();
-    private RatingServiceJDBC ratingService = new RatingServiceJDBC();
 
-    public ConsoleUI(Field field) {
+    private ScoreService scoreService;
+    private CommentService commentService;
+    private RatingService ratingService;
+
+
+    public ConsoleUI(Field field, ScoreServiceJPA scoreService, CommentServiceJPA commentService, RatingService ratingService) {
         this.field = field;
+        this.scoreService = scoreService;
+        this.commentService = commentService;
+        this.ratingService = ratingService;
     }
 
     public void play() {
-
+        scoreService.addScore(new Score("banan", "reversi", 5, new Date()));
+        scoreService.addScore(new Score("bandasdan", "reversi", 2, new Date()));
+        scoreService.addScore(new Score("banadassaan", "reversi", 6, new Date()));
+        scoreService.addScore(new Score("banssssan", "reversi", 7, new Date()));
         menu(); // menu for user
 
         // main game loop
@@ -142,11 +158,12 @@ public class ConsoleUI {
             System.out.println("Wrong input! Rating was not added!");
             return;
         }
-        Rating rating = new Rating(name,  "reversi", ratingScore, new Date());
+
         try {
-            ratingService.setRating(rating);
+            ratingService.setRating(new Rating(name,  "reversi", ratingScore, new Date()));
         } catch (RatingException exception) {
             System.out.println("The rating was not added!");
+            exception.printStackTrace();
         }
 
     }

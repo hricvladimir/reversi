@@ -1,8 +1,17 @@
 package sk.tuke.gamestudio.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Comment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     private String game;
     private String player;
@@ -14,6 +23,10 @@ public class Comment {
         this.player = player;
         this.comment = comment;
         this.commentedOn = commentedOn;
+    }
+
+    public Comment() {
+
     }
 
     public String getGame() {
@@ -56,5 +69,13 @@ public class Comment {
                 ", comment='" + comment + '\'' +
                 ", commentedOn=" + commentedOn +
                 '}';
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 }

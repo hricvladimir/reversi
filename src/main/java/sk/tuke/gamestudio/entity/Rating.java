@@ -1,10 +1,18 @@
 package sk.tuke.gamestudio.entity;
 
+import sk.tuke.gamestudio.service.rating.RatingId;
+
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@IdClass(RatingId.class)
 public class Rating {
 
+    @Id
     private String game;
+
+    @Id
     private String player;
     private int rating;
     private Date ratedOn;
@@ -14,6 +22,10 @@ public class Rating {
         this.player = player;
         this.rating = rating;
         this.ratedOn = ratedOn;
+    }
+
+    public Rating() {
+
     }
 
     public String getGame() {

@@ -1,12 +1,11 @@
-package sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service.rating;
 
-import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
+import sk.tuke.gamestudio.service.comment.CommentException;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 public class RatingServiceJDBC implements RatingService {
 
@@ -16,7 +15,7 @@ public class RatingServiceJDBC implements RatingService {
     public static final String DELETE_STATEMENT = "DELETE FROM rating";
     public static final String SELECT_RATING_STATEMENT = "SELECT rating FROM rating WHERE game = ? AND player = ?";
     public static final String SELECT_AVERAGE_RATING_STATEMENT = "SELECT AVG(rating) FROM rating WHERE game = ?";
-    public static final String INSERT_STATEMENT = "INSERT INTO rating (player, game, rating, ratedOn) VALUES (?, ?, ?, ?) ON CONFLICT (player, game) DO UPDATE SET rating = ?";
+    public static final String INSERT_STATEMENT = "INSERT INTO rating (player, game, rating, rated_on) VALUES (?, ?, ?, ?) ON CONFLICT (player, game) DO UPDATE SET rating = ?";
 
     @Override
     public void setRating(Rating rating) throws RatingException {

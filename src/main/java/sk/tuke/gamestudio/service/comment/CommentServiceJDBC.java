@@ -1,13 +1,13 @@
-package sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service.comment;
 
 import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.entity.Score;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class CommentServiceJDBC implements CommentService{
 

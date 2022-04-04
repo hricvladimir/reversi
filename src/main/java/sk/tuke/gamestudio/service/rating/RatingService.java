@@ -1,4 +1,4 @@
-package sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service.rating;
 
 import sk.tuke.gamestudio.entity.Rating;
 

@@ -1,5 +1,8 @@
 package sk.tuke.gamestudio.game.reversi.core;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Field {
 
     private final int size;
@@ -12,18 +15,9 @@ public class Field {
     private Difficulty difficulty = Difficulty.EASY;
     private final GameMode gameMode;
 
-    public Field(GameMode gameMode) { // default size
-        this.size = 8;
-        this.gameMode = gameMode;
-        initializePlayers();
-        initializeField(size);
-    }
-
-    public Field(GameMode gameMode, int size) { // custom size
-        if(size < 4 || size%2 != 0)
-            throw new IllegalArgumentException("Illegal size. Minimum size is 4 and must be even.");
-        this.size = size;
-        this.gameMode = gameMode;
+    public Field() { // custom size
+        size = 8;
+        gameMode = GameMode.PLAYER_VS_AI;
         initializePlayers();
         initializeField(size);
     }
