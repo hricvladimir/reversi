@@ -20,7 +20,7 @@ public class RatingServiceJPA implements RatingService {
         repository.save(rating);
     }
 
-    @Query
+    @Override
     public int getAverageRating(String game) throws RatingException {
         return repository.getAverage(game);
     }
@@ -32,6 +32,6 @@ public class RatingServiceJPA implements RatingService {
 
     @Override
     public void reset() throws RatingException {
-
+        repository.deleteAll();
     }
 }
