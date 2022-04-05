@@ -1,7 +1,9 @@
 package sk.tuke.gamestudio.service.comment;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.service.repository.CommentRepository;
 
 
 import javax.persistence.EntityManager;
@@ -13,23 +15,21 @@ import java.util.List;
 @Service
 public class CommentServiceJPA implements CommentService{
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    @Autowired
+    CommentRepository repo;
 
     @Override
     public void addComment(Comment comment) {
-        entityManager.persist(comment);
+        repo.save(comment);
     }
 
     @Override
     public List<Comment> getComments(String game) {
-        return (List<Comment>) entityManager.createQuery("select c from Comment c where c.game = :game order by c.commentedOn")
-                .setParameter("game", game)
-                .getResultList();
+        return repo.getComments(game);
     }
 
     @Override
     public void reset() {
-        entityManager.createNativeQuery("DELETE FROM comment").executeUpdate();
+        repo.deleteAll();
     }
 }
