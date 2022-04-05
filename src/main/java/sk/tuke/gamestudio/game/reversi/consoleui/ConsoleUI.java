@@ -28,9 +28,9 @@ public class ConsoleUI {
     private final Field field;
     private final Scanner scanner = new Scanner(System.in);
 
-    private ScoreService scoreService;
-    private CommentService commentService;
-    private RatingService ratingService;
+    private final ScoreService scoreService;
+    private final CommentService commentService;
+    private final RatingService ratingService;
 
 
     public ConsoleUI(Field field, ScoreServiceJPA scoreService, CommentServiceJPA commentService, RatingService ratingService) {
@@ -214,7 +214,12 @@ public class ConsoleUI {
                     Scanner ratingScanner = new Scanner(System.in);
                     System.out.println("Type your name to show your rating: ");
                     String name = ratingScanner.nextLine();
-                    System.out.println("Player rating " + name + ": " + ratingService.getRating("reversi", name));
+                    try{
+                        System.out.println("Player rating " + name + ": " + ratingService.getRating("reversi", name));
+                    } catch (RatingException exception) {
+                        System.out.println("Error: " + exception.getMessage());
+                    }
+
                     input = 3;
                     System.out.println("Type anything and press enter to go back to the menu!");
                     scanner.next();
