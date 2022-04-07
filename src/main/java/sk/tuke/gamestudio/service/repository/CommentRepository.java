@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, String> {
-    @Query("select c from Comment c where c.game = :game")
-    List<Comment> getComments(String game);
+
+    List<Comment> getCommentsByGameOrderByCommentedOnDesc(String game);
 }

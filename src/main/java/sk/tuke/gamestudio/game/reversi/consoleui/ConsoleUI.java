@@ -33,7 +33,7 @@ public class ConsoleUI {
     private final RatingService ratingService;
 
 
-    public ConsoleUI(Field field, ScoreServiceJPA scoreService, CommentServiceJPA commentService, RatingService ratingService) {
+    public ConsoleUI(Field field, ScoreService scoreService, CommentService commentService, RatingService ratingService) {
         this.field = field;
         this.scoreService = scoreService;
         this.commentService = commentService;

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.service.score.ScoreService;
 import sk.tuke.gamestudio.service.score.ScoreServiceJDBC;
+import sk.tuke.gamestudio.service.score.ScoreServiceJPA;
 
 import java.util.Date;
 import java.util.List;

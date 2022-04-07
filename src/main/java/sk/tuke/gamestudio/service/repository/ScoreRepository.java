@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ScoreRepository extends JpaRepository<Score, String> {
-    @Query("select s from Score s where s.game = :game order by s.playedOn")
-    List<Score> getScoresByGame(String game);
+
+    List<Score> getTop10ByGame(String game);
 }
