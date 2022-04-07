@@ -2,6 +2,7 @@ package sk.tuke.gamestudio.service.rating;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
@@ -30,7 +31,14 @@ public class RatingServiceRestClient implements RatingService {
 
     @Override
     public int getRating(String game, String player) throws RatingException {
-        return Objects.requireNonNull(restTemplate.getForEntity(url + "/" + game + "/" + player, Integer.class).getBody());
+        int rating = -1;
+        try{
+            rating = Objects.requireNonNull(restTemplate.getForEntity(url + "/" + game + "/" + player, Integer.class).getBody());
+        } catch (HttpServerErrorException ex) {
+            throw new RatingException("This user did not rate this game yet!");
+        }
+
+        return rating;
     }
 
     @Override

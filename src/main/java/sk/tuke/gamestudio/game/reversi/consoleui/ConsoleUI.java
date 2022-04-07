@@ -173,7 +173,12 @@ public class ConsoleUI {
         Scanner resetScanner = new Scanner(System.in);
         String answer = resetScanner.nextLine();
         if(Objects.equals(answer, "yes") || Objects.equals(answer, "y")) {
-            scoreService.reset();
+            try {
+                scoreService.reset();
+            } catch (Exception e) {
+                System.out.println("Error while resetting: " + e.getMessage());
+            }
+
             System.out.println("The scores were reseted!");
         }
     }
@@ -183,7 +188,11 @@ public class ConsoleUI {
         Scanner resetScanner = new Scanner(System.in);
         String answer = resetScanner.nextLine();
         if(Objects.equals(answer, "yes") || Objects.equals(answer, "y")) {
+        try {
             commentService.reset();
+        } catch (Exception e) {
+            System.out.println("Error while resetting: " + e.getMessage());
+        }
             System.out.println("The comments were reseted!");
         }
     }
@@ -193,7 +202,11 @@ public class ConsoleUI {
         Scanner resetScanner = new Scanner(System.in);
         String answer = resetScanner.nextLine();
         if(Objects.equals(answer, "yes") || Objects.equals(answer, "y")) {
+        try {
             ratingService.reset();
+        } catch (Exception e) {
+            System.out.println("Error while resetting: " + e.getMessage());
+        }
             System.out.println("The ratings were reseted!");
         }
     }
