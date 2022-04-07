@@ -14,8 +14,8 @@ public class ScoreServiceJDBC implements ScoreService{
     public static final String JDBC_USER = "postgres";
     public static final String JDBC_PASSWORD = "sardinki";
     public static final String DELETE_STATEMENT = "DELETE FROM score";
-    public static final String SELECT_STATEMENT = "SELECT player, game, points, playedOn FROM score WHERE game = ? order by points desc LIMIT 10";
-    public static final String INSERT_STATEMENT = "INSERT INTO score (player, game, points, playedOn) VALUES (?, ?, ?, ?)";
+    public static final String SELECT_STATEMENT = "SELECT player, game, points, played_on FROM score WHERE game = ? order by points desc LIMIT 10";
+    public static final String INSERT_STATEMENT = "INSERT INTO score (player, game, points, played_on) VALUES (?, ?, ?, ?)";
 
     @Override
     public void addScore(Score score) throws ScoreException{

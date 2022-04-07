@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-@Service
 public class ScoreServiceJPA implements ScoreService{
     @Autowired
     ScoreRepository repo;
@@ -23,7 +22,7 @@ public class ScoreServiceJPA implements ScoreService{
 
     @Override
     public List<Score> getTopScores(String game) {
-        return repo.getScoresByGame(game);
+        return repo.getTop10ByGame(game);
     }
 
     @Override

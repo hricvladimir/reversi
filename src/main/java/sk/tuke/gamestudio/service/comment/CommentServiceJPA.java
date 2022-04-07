@@ -4,15 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.service.repository.CommentRepository;
-
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-@Service
 public class CommentServiceJPA implements CommentService{
 
     @Autowired
@@ -25,7 +20,7 @@ public class CommentServiceJPA implements CommentService{
 
     @Override
     public List<Comment> getComments(String game) {
-        return repo.getComments(game);
+        return repo.getCommentsByGameOrderByCommentedOnDesc(game);
     }
 
     @Override

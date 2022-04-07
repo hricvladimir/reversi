@@ -19,7 +19,7 @@ public class FieldTest {
     @Test
     public void whenBothPlayersCantMoveGameShouldFinish() {
 
-        int size = 6;
+        int size = 8;
 
         Field field = new Field();
         field.changeTurn();

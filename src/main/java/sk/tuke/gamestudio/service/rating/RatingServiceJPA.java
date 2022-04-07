@@ -9,7 +9,6 @@ import sk.tuke.gamestudio.service.repository.RatingRepository;
 import javax.transaction.Transactional;
 
 @Transactional
-@Service
 public class RatingServiceJPA implements RatingService {
 
     @Autowired
