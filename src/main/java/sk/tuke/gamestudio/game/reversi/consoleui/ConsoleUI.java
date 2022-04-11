@@ -177,6 +177,7 @@ public class ConsoleUI {
                 scoreService.reset();
             } catch (Exception e) {
                 System.out.println("Error while resetting: " + e.getMessage());
+                return;
             }
 
             System.out.println("The scores were reseted!");
@@ -192,6 +193,7 @@ public class ConsoleUI {
             commentService.reset();
         } catch (Exception e) {
             System.out.println("Error while resetting: " + e.getMessage());
+            return;
         }
             System.out.println("The comments were reseted!");
         }
@@ -206,6 +208,7 @@ public class ConsoleUI {
             ratingService.reset();
         } catch (Exception e) {
             System.out.println("Error while resetting: " + e.getMessage());
+            return;
         }
             System.out.println("The ratings were reseted!");
         }
