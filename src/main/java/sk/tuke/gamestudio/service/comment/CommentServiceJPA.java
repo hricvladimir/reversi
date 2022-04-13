@@ -1,7 +1,6 @@
 package sk.tuke.gamestudio.service.comment;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.service.repository.CommentRepository;
 import javax.transaction.Transactional;

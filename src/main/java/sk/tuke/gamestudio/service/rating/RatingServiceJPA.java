@@ -2,7 +2,6 @@ package sk.tuke.gamestudio.service.rating;
 
 import org.springframework.aop.AopInvocationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.service.repository.RatingRepository;
 
