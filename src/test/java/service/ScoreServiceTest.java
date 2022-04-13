@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ScoreServiceTest {
-    private ScoreService scoreService = new ScoreServiceJDBC();
+    private ScoreService scoreService = new ScoreServiceJPA();
 
     @Test
     public void addScoreTest() {

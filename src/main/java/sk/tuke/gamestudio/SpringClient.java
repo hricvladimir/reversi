@@ -23,7 +23,6 @@ import sk.tuke.gamestudio.service.score.ScoreServiceRestClient;
 @SpringBootApplication
 @Configuration
 @EntityScan("sk.tuke.gamestudio.entity")
-@EnableJpaRepositories("sk.tuke.gamestudio.service.repository")
 public class SpringClient {
     public static void main(String[] args) {
         new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);

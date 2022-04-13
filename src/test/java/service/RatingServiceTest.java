@@ -12,7 +12,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RatingServiceTest {
-    private RatingService service = new RatingServiceJDBC();
+    private RatingService service = new RatingServiceJPA();
 
     @Test
     public void addRatingTest() {

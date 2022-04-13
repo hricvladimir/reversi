@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CommentServiceTest {
 
-    private CommentService service = new CommentServiceJDBC();
+    private CommentService service = new CommentServiceJPA();
 
     @Test
     public void addCommentTest() {
