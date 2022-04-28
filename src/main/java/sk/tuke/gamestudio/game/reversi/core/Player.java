@@ -2,23 +2,23 @@ package sk.tuke.gamestudio.game.reversi.core;
 
 public class Player {
     private String name;
-    private char color;
+    private Color color;
     private int score;
 
-    public Player(String name, char color) {
+    public Player(String name, Color color) {
         this.name = name;
         this.color = color;
     }
-    public Player(char color) {
+    public Player(Color color) {
         this.name = "player";
         this.color = color;
     }
 
-    public char getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(char color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 

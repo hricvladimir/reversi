@@ -350,7 +350,7 @@ public class ConsoleUI {
             System.out.print(ANSI_RESET + ++index + " ");
             for(Tile tile : tileRow) {
                 if(tile.getTileState() == TileState.OCCUPIED) {
-                    if(tile.getStone().getPlayer().getColor() == 'R') System.out.print(ANSI_RED + "R " + ANSI_RESET);
+                    if(tile.getStone().getPlayer().getColor() == Color.WHITE) System.out.print(ANSI_RED + "R " + ANSI_RESET);
                     else System.out.print(ANSI_BLUE + "B " + ANSI_RESET);
                 } else System.out.print(ANSI_RESET + "- ");
             }
@@ -360,7 +360,7 @@ public class ConsoleUI {
 
     private void printGameStats() {
         Player playerOnTurn = field.getPlayerOnTurn();
-        if(playerOnTurn.getColor() == 'B')
+        if(playerOnTurn.getColor() == Color.WHITE)
             System.out.println("Player " + playerOnTurn.getName() + " with color " + ANSI_BLUE + "B" + ANSI_RESET + " is on turn.");
         else System.out.println("Player " + playerOnTurn.getName() + " with color " + ANSI_RED + "R" + ANSI_RESET + " is on turn.");
         System.out.println(field.getPlayer1().getName() + "'s score: " + field.getPlayer1().getScore());
