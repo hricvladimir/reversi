@@ -16,10 +16,10 @@ public class Computer extends Player{
             {99, -8, 8, 6, 6, 8, -8,99},
     };
 
-    public Computer(String name, char color) {
+    public Computer(String name, Color color) {
         super(name, color);
     }
-    public Computer(char color) {
+    public Computer(Color color) {
         super(color);
     }
 

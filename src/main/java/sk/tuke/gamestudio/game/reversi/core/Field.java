@@ -25,12 +25,12 @@ public class Field {
     private void initializePlayers() {
         switch (gameMode) {
             case PLAYER_VS_PLAYER -> {
-                this.player1 = new Player('B');
-                this.player2 = new Player('R');
+                this.player1 = new Player(Color.WHITE);
+                this.player2 = new Player(Color.BLACK);
             }
             case PLAYER_VS_AI -> {
-                this.player1 = new Player('B');
-                this.player2 = new Computer("Computer", 'R');
+                this.player1 = new Player(Color.WHITE);
+                this.player2 = new Computer("Computer", Color.BLACK);
             }
         }
         playerOnTurn = player1;
@@ -334,6 +334,10 @@ public class Field {
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    public Tile getTile(int row, int col) {
+        return tiles[row][col];
     }
 
     public Player getPlayerOnTurn() {

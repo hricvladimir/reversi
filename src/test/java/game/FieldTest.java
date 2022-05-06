@@ -11,8 +11,8 @@ public class FieldTest {
     private final Random randomGenerator = new Random();
 
     public FieldTest() {
-        Computer player1 = new Computer("testplayer1", 'B');
-        Computer player2 = new Computer("testplayer2", 'R');
+        Computer player1 = new Computer("testplayer1", Color.BLACK);
+        Computer player2 = new Computer("testplayer2", Color.WHITE);
 
     }
 
