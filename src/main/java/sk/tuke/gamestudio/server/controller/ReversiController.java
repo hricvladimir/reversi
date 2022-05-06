@@ -37,7 +37,20 @@ public class ReversiController {
         sb.append("<div class=\"container\">");
         for(int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                sb.append("<a class=\"square\"href='/reversi?row=").append(row).append("&col=").append(col).append("'>\n");
+                var tile = field.getTile(row, col);
+                if(tile.getTileState() == TileState.OCCUPIED) {
+                    if(tile.getStone().getPlayer().getColor() == Color.BLACK) {
+                        sb.append("<a class=\"square\"href='/reversi?row=").append(row).append("&col=").append(col).append("'>");
+                        sb.append("<img src=\"./images/black.png\" alt=\"black-circle\" style=\"width: 96%; height: 96%\">");
+                        sb.append("</a>");
+                    }
+                    else {
+                        sb.append("<a class=\"square\"href='/reversi?row=").append(row).append("&col=").append(col).append("'>\n");
+                        sb.append("<img src=\"./images/white.png\" alt=\"black-circle\" style=\"width: 96%; height: 96%\">");
+                        sb.append("</a>");
+                    }
+                }
+                else sb.append("<a class=\"square\"href='/reversi?row=").append(row).append("&col=").append(col).append("'></a>\n");
             }
         }
         sb.append("</div>");
@@ -70,6 +83,12 @@ public class ReversiController {
 //
 //        sb.append("</table>\n");
 //        return sb.toString();
+    }
+
+
+    public String resetField() {
+        System.out.println("gej");
+        return "xd";
     }
 }
 

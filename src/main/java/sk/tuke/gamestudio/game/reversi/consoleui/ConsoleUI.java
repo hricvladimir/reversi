@@ -93,19 +93,12 @@ public class ConsoleUI {
             switch (input) {
                 case 1 -> getGameSettingsFromUser();
                 case 2 -> printTopScores();
-
                 case 3 -> printAllComments();
-
                 case 4 -> addComment();
-
                 case 5 -> rateGame();
-
                 case 6 -> showRating();
-
                 case 7 -> resetScores();
-
                 case 8 -> resetComments();
-
                 case 9 -> resetRatings();
             }
         }
