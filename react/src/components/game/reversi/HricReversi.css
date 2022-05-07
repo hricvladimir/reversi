@@ -1,0 +1,52 @@
+.tile {
+    background: #248232;
+    width: 40px;
+    height: 40px;
+    border: black solid 2px;
+}
+
+.tile:hover {
+    background: #A1E887;
+}
+
+.reversifield {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stone-white-circle {
+    background: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: black solid 2px;
+}
+
+.stone-black-circle {
+    background: #001514;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: black solid 2px;
+}
+
+
+
+/*.stone-white {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    background: green;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*}*/
+
+/*.stone-black {*/
+/*    background: green;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    border: black solid 2px;*/
+/*}*/
+
+
