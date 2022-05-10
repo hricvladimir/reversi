@@ -1,5 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+
+import React from 'react';
 import {addComment, fetchComments} from "./_api/comment.service";
 import {fetchScores} from "./_api/score.service";
 import {useEffect, useState} from "react";
@@ -10,15 +12,21 @@ import {addRating, fetchAverageRating, fetchRating} from "./_api/rating.service"
 import Ratings from "./components/Ratings";
 import RatingForm from "./components/RatingForm";
 import HricReversi from "./components/game/reversi/HricReversi";
+import Menu from "./components/Menu";
+import {Route, Routes} from "react-router-dom";
+import Settings from "./components/Settings";
 
 function App() {
 
-    const loggedPlayer = 'gody';
+    const loggedPlayer = 'jano';
     const selectedGame = 'reversi';
     const [comments, setComments] = useState([]);
     const [scores, setScores] = useState([]);
     const [rating, setRating] = useState([]);
     const [averageRating, setAverageRating] = useState([]);
+    const [difficulty, setDifficulty] = useState(['hard']);
+
+
 
 
     const fetchData = () => {
@@ -55,26 +63,48 @@ function App() {
     return (
     <div className="App container-fluid mt-4 mb-5">
         {/* HEADING */}
-        <h1>Reversi</h1>
-        <HricReversi loggedPlayer={loggedPlayer}/>
-
-        {/* SCORES */}
-        <h1>Scores</h1>
-        <Scores scores={scores}/>
-
-        {/* RATING */}
-        <h1>Ratings</h1>
-        <Ratings rating={rating} player={loggedPlayer} averageRating={averageRating}/>
-        <RatingForm game={selectedGame} player={loggedPlayer} onSendRating={handleSendRating}/>
-
-        {/* COMMENTS */}
-        <h1>Comments</h1>
-        <h2>Add comment</h2>
-        <CommentForm game={selectedGame} player={loggedPlayer} onSendComment={handleSendComment}/>
-        <br/>
-        <Comments comments={comments}/>
-
-
+        <Menu/>
+        <div className="container index-container">
+            <Routes>
+                <Route path={"scores"} element={
+                    <div className="scores">
+                        <React.Fragment>
+                        <h1>Scores</h1>
+                        <Scores scores={scores}/>
+                        </React.Fragment>
+                    </div>
+                }/>
+                <Route path={"comments"} element={
+                    <div className="comments">
+                        <React.Fragment>
+                            <h1>Comments</h1>
+                            <h2>Add comment</h2>
+                            <CommentForm game={selectedGame} player={loggedPlayer} onSendComment={handleSendComment}/>
+                            <br/>
+                            <Comments comments={comments}/>
+                        </React.Fragment>
+                    </div>
+                }/>
+                <Route path={"ratings"} element={
+                    <div className="ratings">
+                        <React.Fragment>
+                            <Ratings rating={rating} player={loggedPlayer} averageRating={averageRating}/>
+                            <RatingForm game={selectedGame} player={loggedPlayer} onSendRating={handleSendRating}/>
+                        </React.Fragment>
+                    </div>
+                }/>
+                <Route path={"/"} element={
+                    <div className="settings-container">
+                        <Settings setDifficulty={setDifficulty}/>
+                    </div>
+                }/>
+                <Route path={"/game"} element={
+                    <div className="game-container">
+                        <HricReversi loggedPlayer={loggedPlayer} fetchData={fetchData} difficulty={difficulty}/>
+                    </div>
+                }/>
+            </Routes>
+        </div>
     </div>
     );
 }

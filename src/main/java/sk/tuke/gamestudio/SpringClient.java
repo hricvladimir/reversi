@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.game.reversi.consoleui.ConsoleUI;
+import sk.tuke.gamestudio.game.reversi.core.Difficulty;
 import sk.tuke.gamestudio.service.comment.CommentService;
 import sk.tuke.gamestudio.service.comment.CommentServiceJPA;
 import sk.tuke.gamestudio.service.comment.CommentServiceRestClient;
@@ -51,5 +52,10 @@ public class SpringClient {
     @Bean
     public RatingService ratingService() {
         return new RatingServiceRestClient();
+    }
+
+    @Bean
+    public Difficulty difficulty() {
+        return Difficulty.HARD;
     }
 }

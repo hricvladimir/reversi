@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Comic Sans MS", serif;
+
+}
+
+.App {
+    height: 97vh;
+}
+
+.heading-container {
+    padding-top: 2rem;
+}
+
+.index-container {
+    padding-top: 2rem;
+}
+
+.settings-confirm-button {
+    width: 120px;
+    height: 10%;
+    font-size: 200%;
+    border: 2px solid black;
+    box-shadow: 10px 4px 10px black;
+    background: #4cc768;
+    margin-right: 10px;
+    color: #166a75;
+    border-radius: 10px;
+}
+
+.settings-confirm-button:hover {
+    background: #3dee61;
+}
+
+#root {
+    height: 96%;
+    min-height: 97.4vh;
+    width: 100vw;
+    background:
+            linear-gradient(#0b7a5a, transparent),
+            linear-gradient(to top left, #73ff00, transparent),
+            linear-gradient(to top right, #2d5d04, transparent);
+    background-blend-mode: screen;
+}
+
+.settings-container {
+    min-height: 30vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    text-align: center;
+    color: #166a75;
+    text-shadow: 5px 2px 10px #484343;
+}
+
+.welcome-text {
+    font-size:  10vw;
+}
+
+.difficulty-text {
+    font-size: 3vw;
+    text-shadow: 2px 4px 5px #484343;
+}
+
+#reversi-img {
+    width: 45%;
+    float: left;
+    margin-top: 5%;
+    transform: rotate(-25deg);
+}
+
+.container {
+    height: 100%;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media(min-width: 992px) {
+    .settings-confirm-button {
+        width: 200px;
+        font-size: 200%;
+        margin-right: 50px;
+    }
+
+    .welcome-text {
+        font-size: 6vw;
+    }
+}

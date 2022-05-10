@@ -18,7 +18,7 @@ public class ScoreServiceJPA implements ScoreService{
 
     @Override
     public List<Score> getTopScores(String game) {
-        return repo.getTop10ByGameOrderByPoints(game);
+        return repo.getTop10ByGameOrderByPointsDesc(game);
     }
 
     @Override
