@@ -15,7 +15,7 @@ public class Field {
     private Player playerOnTurn;
     private GameState state = GameState.PLAYING;
     private Difficulty difficulty = Difficulty.EASY;
-    private final GameMode gameMode;
+    private GameMode gameMode;
     private Date createDate;
     private Date finishedDate;
     private long milliseconds;
@@ -29,6 +29,15 @@ public class Field {
         this.difficulty = difficulty;
     }
 
+    public Field() {
+        size = 8;
+        gameMode = GameMode.PLAYER_VS_PLAYER;
+        initializePlayers();
+        initializeField(size);
+        createDate = new Date();
+        this.difficulty = Difficulty.EASY;
+    }
+
     private void initializePlayers() {
         switch (gameMode) {
             case PLAYER_VS_PLAYER -> {
@@ -37,7 +46,7 @@ public class Field {
             }
             case PLAYER_VS_AI -> {
                 this.player1 = new Player(Color.WHITE);
-                this.player2 = new Computer("Computer", Color.BLACK);
+                this.player2 = new Computer("AI", Color.BLACK);
             }
         }
         playerOnTurn = player1;
@@ -404,5 +413,10 @@ public class Field {
     public long getMilliseconds() {
         return milliseconds;
     }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
 }
 

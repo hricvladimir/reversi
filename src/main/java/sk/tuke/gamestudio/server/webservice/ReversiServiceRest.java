@@ -34,6 +34,17 @@ public class ReversiServiceRest {
         return field;
     }
 
+    @GetMapping("/newGame/pvp")
+    public Field newGameHard(@RequestParam String playerName1, @RequestParam String playerName2) {
+        field = new Field();
+        field.getPlayer1().setName(playerName1);
+        field.getPlayer2().setName(playerName2);
+        field.setGameMode(GameMode.PLAYER_VS_PLAYER);
+        return field;
+    }
+
+
+
     @GetMapping("/placeStone")
     public Field placeStone(@RequestParam int row, @RequestParam int col) {
         try {

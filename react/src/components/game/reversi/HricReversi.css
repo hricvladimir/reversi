@@ -16,7 +16,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 0rem;
+    gap: 0;
 }
 
 .reversifield {
@@ -31,7 +31,7 @@
 }
 
 .concrete-info-text {
-    color: #4ceebd;
+    color: #5bef62;
 }
 
 .stone-white-circle {
@@ -58,7 +58,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    visibility: hidden;
 }
 
 .newgame-button {
@@ -72,6 +71,7 @@
     .game-container {
         flex-direction: row;
         gap: 3rem;
+        margin-top: 50px;
     }
 
     .tile {
@@ -87,10 +87,6 @@
     .stone-black-circle {
         width: 55px;
         height: 55px;
-    }
-
-    .button-container {
-        visibility: visible;
     }
 }
 
