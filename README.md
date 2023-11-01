@@ -13,3 +13,6 @@ Reversi is a turn-based game played on an 8x8 grid, where the goal is to dominat
 Each player takes turns placing their discs on the board, strategically sandwiching their opponent's pieces to turn them into their own.
 The player that has more discs at the end, wins.
 You can play against your friend in a local multiplayer or against an AI.
+
+## Video Showcase
+https://www.youtube.com/watch?v=MIP53giSuQs
