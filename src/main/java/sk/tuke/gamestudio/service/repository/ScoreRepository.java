@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ScoreRepository extends JpaRepository<Score, String> {
 
-    List<Score> getTop10ByGameOrderByPoints(String game);
+    List<Score> getTop10ByGameOrderByPointsDesc(String game);
 }

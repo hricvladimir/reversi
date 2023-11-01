@@ -2,6 +2,8 @@ package sk.tuke.gamestudio.game.reversi.core;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class Field {
 
@@ -13,13 +15,27 @@ public class Field {
     private Player playerOnTurn;
     private GameState state = GameState.PLAYING;
     private Difficulty difficulty = Difficulty.EASY;
-    private final GameMode gameMode;
+    private GameMode gameMode;
+    private Date createDate;
+    private Date finishedDate;
+    private long milliseconds;
 
-    public Field() { // custom size
+    public Field(Difficulty difficulty) { // custom size
         size = 8;
         gameMode = GameMode.PLAYER_VS_AI;
         initializePlayers();
         initializeField(size);
+        createDate = new Date();
+        this.difficulty = difficulty;
+    }
+
+    public Field() {
+        size = 8;
+        gameMode = GameMode.PLAYER_VS_PLAYER;
+        initializePlayers();
+        initializeField(size);
+        createDate = new Date();
+        this.difficulty = Difficulty.EASY;
     }
 
     private void initializePlayers() {
@@ -30,7 +46,7 @@ public class Field {
             }
             case PLAYER_VS_AI -> {
                 this.player1 = new Player(Color.WHITE);
-                this.player2 = new Computer("Computer", Color.BLACK);
+                this.player2 = new Computer("AI", Color.BLACK);
             }
         }
         playerOnTurn = player1;
@@ -77,6 +93,8 @@ public class Field {
         if(!isMovePossible()) changeTurn();
         if(!isMovePossible()) {
             state = GameState.FINISHED; // two consecutive skips result in early game finish
+            finishedDate = new Date();
+            calculateMilliseconds();
             throw new NoPossibleMovesException();
         }
 
@@ -96,18 +114,18 @@ public class Field {
         if(freeTiles == 0) {
             state = GameState.FINISHED;
             updateScore();
+            finishedDate = new Date();
+            calculateMilliseconds();
+
             return;
         }
         updateScore();
-        /*
-        if(getPlayerOnTurn() instanceof Computer) {
-            if(difficulty == Difficulty.EASY)
-                ((Computer) getPlayerOnTurn()).makeTurn();
-            else if(difficulty == Difficulty.HARD)
-                ((Computer) getPlayerOnTurn()).makeAdvancedTurn();
-        }
-        */
+    }
 
+    private void calculateMilliseconds() throws IllegalGameStateException {
+        if(milliseconds < 0)
+            throw new IllegalGameStateException("Time error");
+        milliseconds = finishedDate.getTime() - createDate.getTime();
     }
 
     private void updateScore() {
@@ -383,5 +401,22 @@ public class Field {
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public Date getFinishedDate() {
+        return finishedDate;
+    }
+
+    public long getMilliseconds() {
+        return milliseconds;
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
 }
 

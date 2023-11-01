@@ -21,7 +21,7 @@ public class FieldTest {
 
         int size = 8;
 
-        Field field = new Field();
+        Field field = new Field(Difficulty.HARD);
         field.changeTurn();
         for(int row = 0; row < size; row++) {
             for(int col = 0; col < size; col++) {
@@ -47,7 +47,7 @@ public class FieldTest {
 
     @Test
     public void placingStoneColumnCheck() {
-        Field field = new Field();
+        Field field = new Field(Difficulty.HARD);
         field.getTiles()[3][3].occupyTile(new Stone(field.getPlayerOnTurn()));
         field.getTiles()[3][4].occupyTile(new Stone(field.getPlayerOnTurn()));
         field.getTiles()[3][5].occupyTile(new Stone(field.getPlayerOnTurn()));
@@ -70,7 +70,7 @@ public class FieldTest {
     }
     @Test
     public void placingStonesShouldDeceaseFreeTiles() {
-        Field field = new Field();
+        Field field = new Field(Difficulty.HARD);
         int freeTiles = field.getFreeTiles();
 
         for(int i = 0; i < 10; i++) {
@@ -95,7 +95,7 @@ public class FieldTest {
 
     @Test
     public void placingStonesInWrongPositionShouldNotDeceaseFreeTiles() {
-        Field field = new Field();
+        Field field = new Field(Difficulty.HARD);
         int freeTiles = field.getFreeTiles();
         try {
             for(int i = 0; i < 5; i++) {
@@ -111,7 +111,7 @@ public class FieldTest {
 
     @Test
     public void stoneShouldNotBeAddedInWrongPosition() {
-        Field field = new Field();
+        Field field = new Field(Difficulty.HARD);
         int size = field.getSize();
         for(int row = 0; row < 2; row++) {
             for(int col = 0; col < size; col++) {
@@ -154,7 +154,7 @@ public class FieldTest {
 
     @Test
     public void ifFinishedStoneShouldNotBeAdded() {
-        Field field = new Field();
+        Field field = new Field(Difficulty.HARD);
         field.setState(GameState.FINISHED);
         try {
             field.addStoneToField(field.getPlayerOnTurn(), 4, 5);

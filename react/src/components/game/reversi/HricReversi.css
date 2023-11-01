@@ -1,0 +1,111 @@
+.tile {
+    background: #248232;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border: black solid 2px;
+    box-shadow: 20px 15px 40px black;
+}
+
+.tile:hover, .tile:active {
+    background: #A1E887;
+}
+
+.game-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0;
+}
+
+.reversifield {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 5px solid black;
+}
+
+.reversi-info {
+    text-shadow: 8px 4px 8px black;
+}
+
+.concrete-info-text {
+    color: #5bef62;
+}
+
+.stone-white-circle {
+    background: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: black solid 2px;
+    margin: auto;
+    box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.45);
+}
+
+.stone-black-circle {
+    background: #001514;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: black solid 2px;
+    margin: auto;
+    box-shadow: 5px 5px 4px rgba(0, 0, 0, 0.45);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.newgame-button {
+
+    width: 150px;
+    height: 60px;
+    font-size: 25px;
+}
+
+@media(min-width: 992px) {
+    .game-container {
+        flex-direction: row;
+        gap: 3rem;
+        margin-top: 50px;
+    }
+
+    .tile {
+        width: 60px;
+        height: 60px;
+    }
+
+    .stone-white-circle {
+        width: 55px;
+        height: 55px;
+    }
+
+    .stone-black-circle {
+        width: 55px;
+        height: 55px;
+    }
+}
+
+
+
+/*.stone-white {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    background: green;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*}*/
+
+/*.stone-black {*/
+/*    background: green;*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    border: black solid 2px;*/
+/*}*/
+
+

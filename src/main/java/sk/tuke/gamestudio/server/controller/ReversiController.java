@@ -1,21 +1,18 @@
 package sk.tuke.gamestudio.server.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import sk.tuke.gamestudio.game.reversi.core.Color;
+import sk.tuke.gamestudio.game.reversi.core.Difficulty;
 import sk.tuke.gamestudio.game.reversi.core.Field;
-import sk.tuke.gamestudio.game.reversi.core.Tile;
 import sk.tuke.gamestudio.game.reversi.core.TileState;
-
-import java.util.Date;
 
 @Controller
 @RequestMapping("/reversi")
 public class ReversiController {
 
-    Field field = new Field();
+    Field field = new Field(Difficulty.HARD);
 
     @RequestMapping
     public String reversi(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer col) {
